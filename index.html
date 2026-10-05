@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  >
+  <title>Messe App RVO-Jet</title>
+
+&#8203;
+  
+  <link rel="manifest" href="./manifest.json">
+
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Messe Info">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <script
+  type="module"
+  src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"
+></script>
+
+  <style>
+    :root {
+  --app-max-width: 100%;
+  --nav-height: 112px;
+  --qr-size: clamp(120px, 18vw, 180px);
+
+  --color-background: #004388;
+  --color-card: #1e293b;
+  --color-nav: #020617;
+  --color-primary: #2563eb;
+  --color-text: #ffffff;
+  --color-muted: #cbd5e1;
+
+  --radius-large: 28px;
+  --radius-medium: 22px;
+
+  --page-padding: 28px;
+  --button-font-size: 16px;
+}
+
+html,
+body,
+div,
+main,
+section,
+nav,
+button,
+img,
+video,
+iframe,
+h1,
+h2,
+h3,
+p,
+ul,
+li,
+span {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #111827;
+  color: var(--color-text);
+  overscroll-behavior: none;
+  touch-action: manipulation;
+
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+body {
+  overflow: hidden;
+}
+
+.app {
+  width: 100%;
+  min-height: 100dvh;
+  height: 100dvh;
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  background: var(--color-background);
+  position: relative;
+  overflow: hidden;
+}
+
+.content {
+  height: calc(100dvh - var(--nav-height));
+  overflow: hidden;
+  position: relative;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translateY(12px);
+
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+
+  height: 100%;
+  overflow-y: auto;
+
+  padding: calc(var(--page-padding) + env(safe-area-inset-top))
+    var(--page-padding)
+    calc(42px + env(safe-area-inset-bottom));
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.page.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform: translateY(0);
+}
+
+h1 {
+  font-size: clamp(42px, 7vw, 64px);
+  line-height: 1.05;
+  margin: 0 0 16px;
+}
+
+h2 {
+  font-size: clamp(34px, 5vw, 46px);
+  margin: 0 0 24px;
+}
+
+h3 {
+  margin: 0 0 10px;
+  font-size: clamp(22px, 3vw, 28px);
+}
+
+p,
+li {
+  font-size: clamp(14px, 2vw, 18px);
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+ul {
+  padding-left: 24px;
+}
+
+.hero {
+  height: 100%;
+  border-radius: var(--radius-large);
+  transition: opacity 0.8s ease;
+  background:
+    linear-gradient(
+     to top,
+   rgba(15, 23, 42, 0.99) 0%,
+   rgba(15, 23, 42, 0.7) 25%,
+   rgba(15, 23, 42, 0.2) 45%,
+   rgba(15, 23, 42, 0) 60%),
+    url('bilder/NDV_Bild_Titel.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.home-start {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.home-start .hero {
+  flex: 1;
+  min-height: 0;
+}
+
+.home-button {
+  flex: 0 0 auto;
+  margin-top: 0;
+}
+
+.logo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.534);
+  color: #111827;
+  padding: 8px 10px;
+  border-radius: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.logo img {
+  height: 50px; /* Oder die Höhe, die gut in deinen Header passt */
+  width: auto; /* Die Breite passt sich automatisch an, damit das Logo nicht verzerrt */
+  display: block; /* Verhindert unerwünschte Abstände unter dem Bild */
+}
+
+.hero-text {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto -20px auto;
+  text-align: left;
+}
+
+.primary-button {
+  width: 100%;
+  margin-top: 24px;
+  padding: 22px;
+  border: none;
+  border-radius: var(--radius-medium);
+  background: var(--color-primary);
+  color: #ffe843;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-medium);
+  padding: 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+.brochure-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.brochure-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px;
+  background: var(--color-card);
+  color: white;
+  border: none;
+  border-radius: var(--radius-medium);
+  text-align: left;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+.brochure-card .icon {
+  font-size: 44px;
+  flex: 0 0 auto;
+}
+
+.brochure-card p {
+  margin: 0;
+}
+
+.pdf-overlay {
+  position: absolute;
+  inset: 12px;
+  bottom: calc(var(--nav-height) + 12px);
+  background: #0b1120;
+  border-radius: var(--radius-large);
+  overflow: auto;
+  display: none;
+  z-index: 50;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pdf-overlay.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-header {
+  height: 88px;
+  padding: 14px 18px;
+  background: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pdf-header h3 {
+  margin: 2px 0 0;
+  font-size: 22px;
+}
+
+.small-label {
+  font-size: 13px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.close-button {
+  border: none;
+  background: #ef4444;
+  color: white;
+  border-radius: 16px;
+  padding: 14px 18px;
+  font-size: 17px;
+  font-weight: bold;
+  flex: 0 0 auto;
+}
+
+.pdf-overlay iframe {
+  width: 100%;
+  flex: 1;
+  border: none;
+  background: white;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gallery-box {
+  width: 90%;
+  height: 58vh;
+  margin: 0 auto;
+  background: #e8f1fb;
+  border-radius: var(--radius-large);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-box img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+.gallery-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 0 14px;
+}
+
+.gallery-controls button {
+  background: var(--color-primary);
+  color: #ffe843;
+  border: none;
+  border-radius: 18px;
+  padding: 16px 24px;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.gallery-controls span {
+  font-size: 20px;
+  color: #e5e7eb;
+}
+
+.media-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.media-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #94a3b8;
+  transition: all 0.3s ease;
+}
+
+.media-dot.active {
+  background: #b7dbffdd;
+  transform: scale(1.3);
+}
+
+.hint {
+  margin-top: 0;
+  font-size: 17px;
+  color: #94a3b8;
+}
+
+.bottom-nav {
+ position: absolute;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ width: 100%;
+ height: calc(var(--nav-height) + env(safe-area-inset-bottom));
+ padding-bottom: env(safe-area-inset-bottom);
+ background: var(--color-nav);
+ display: grid;
+ grid-template-columns: repeat(4, 1fr);
+ border-top: 1px solid rgba(255, 255, 255, 0.12);
+ z-index: 100;
+}
+
+.bottom-nav button {
+ height: var(--nav-height);
+ border: none;
+ background: transparent;
+ color: #8ba3c7;
+ font-size: var(--button-font-size);
+ font-weight: bold;
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+ align-items: center;
+ justify-content: center;
+ padding: 10px 0 12px;
+ transition: background 0.2s ease, color 0.2s ease;
+}
+    
+.nav-icon {
+ width: 40px;
+ height: 40px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ flex: 0 0 auto;
+}
+    
+.nav-icon svg {
+ width: 40px;
+ height: 40px;
+ stroke: currentColor;
+ fill: none;
+ stroke-width: 2;
+ stroke-linecap: round;
+ stroke-linejoin: round;
+ display: block;
+}
+    
+.nav-label {
+ font-size: var(--button-font-size);
+ line-height: 1;
+}
+    
+.bottom-nav button.active {
+ color: #ffe843;
+ background: #1e293b;
+}
+
+.technical-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.technical-table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  background: #ffffff;
+  color: #111827;
+}
+
+.technical-table caption {
+  padding: 16px;
+  background: #e2e8f0;
+  color: #004388;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.technical-table th,
+.technical-table td {
+  padding: 14px 12px;
+  border: 1px solid #cbd5e1;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.technical-table thead th {
+  background: #e2e8f0;
+  color: #004388;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.technical-table thead th:first-child {
+  text-align: left;
+}
+
+.technical-table tbody th {
+  width: 40%;
+  background: #f1f5f9;
+  color: #111827;
+  font-weight: 600;
+  text-align: left;
+}
+
+.technical-table td {
+  background: #ffffff;
+  color: #111827;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.table-note {
+  display: block;
+  margin-top: 5px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: normal;
+}
+
+@media (orientation: landscape) {
+  .app {
+    max-width: 520px;
+  }
+
+  h1 {
+    font-size: 42px;
+  }
+
+  .gallery-box {
+    height: 48vh;
+  }
+}
+
+.hero-text h1 {
+  font-size: 58px;
+  line-height: 1.05;
+  margin: 0 0 16px;
+  color: #ffe843;
+}
+
+.hero-text p {
+  max-width: 620px;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: left;
+}
+
+.qr-info-box {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  background: var(--color-card);
+  border-radius: var(--radius-medium);
+
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.qr-image {
+  flex: 0 0 var(--qr-size);
+}
+
+.qr-image img {
+  width: var(--qr-size);
+  height: var(--qr-size);
+
+  display: block;
+
+  max-width: 100%;
+  object-fit: contain;
+
+  background: white;
+  border-radius: 12px;
+}
+
+.qr-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.qr-text h3 {
+  margin: 0 0 8px 0;
+  color: #ffe843;
+}
+
+.qr-text p {
+  margin: 0;
+}
+
+.page-title {
+  color: #ffe843;
+}
+
+#gallery .page-title {
+margin-top: -10px;
+margin-bottom: 20px;
+line-height: 1;
+}
+
+.brochure-card h3 {
+  color: #ffe843;
+}
+
+.card h3 {
+  color: #ffe843;
+}
+
+.comparison-image {
+  width: 100%;
+  border-radius: 16px;
+  display: block;
+}
+
+/* Umschalter zwischen Galerie und 3-D-Modell */
+
+.model-button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 18px 22px;
+  border: none;
+  border-radius: 18px;
+  background: #ffe843;
+  color: #004388;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+}
+
+.model-button:active {
+  transform: scale(0.98);
+  background: #f5d900;
+}
+
+.model-button-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.model-button-icon svg {
+  width: 30px;
+  height: 30px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.model-view {
+  display: none;
+  width: 100%;
+}
+
+.model-view.active {
+  display: block;
+}
+
+.model-viewer-box {
+  position: relative;
+  width: 90%;
+  height: 60vh;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--radius-large);
+  background:
+    radial-gradient(
+      circle at center,
+      #ffffff 0%,
+      #e8f1fb 70%,
+      #ccdeef 100%
+    );
+}
+
+.model-viewer-box model-viewer {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: transparent;
+  --poster-color: transparent;
+}
+
+.model-loading {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: rgba(0, 67, 136, 0.9);
+  color: white;
+  font-size: 15px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.model-instructions {
+  width: 90%;
+  margin: 16px auto 0;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: var(--color-card);
+  text-align: center;
+}
+
+.model-instructions p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.model-instructions strong {
+  color: #ffe843;
+}
+
+.model-error {
+  display: none;
+  width: 90%;
+  margin: 16px auto 0;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: #7f1d1d;
+  color: #ffffff;
+  text-align: center;
+  font-size: 16px;
+}
+
+.model-error.active {
+  display: block;
+}
+
+/* Kiosk-Schutz: Inhalte nicht markieren oder kopieren */
+
+.app,
+.app * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.app img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
+}
+
+/* Sprachschalter */
+
+.language-switch {
+  position: absolute;
+  top: calc(14px + env(safe-area-inset-top));
+  right: 18px;
+  z-index: 150;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+
+  background: rgba(2, 6, 23, 0.82);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.language-button {
+  min-width: 52px;
+  height: 42px;
+  padding: 0 14px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: transparent;
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.language-button.active {
+  background: #ffe843;
+  color: #004388;
+}
+
+.language-button:active {
+  transform: scale(0.96);
+}
+
+/* Sprachschalter ausblenden, während ein PDF geöffnet ist */
+
+body.pdf-is-open .language-switch {
+  display: none;
+}
+
+/* Registerkarten für die 3-D-Modelle */
+
+.model-tabs {
+  width: 90%;
+  margin: 0 auto 12px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+
+  padding: 5px;
+  border-radius: 16px;
+
+  background: rgba(2, 6, 23, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.model-tab {
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px 5px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: transparent;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.model-tab.active {
+  background: #ffe843;
+  color: #004388;
+}
+
+.model-tab:active {
+  transform: scale(0.97);
+}
+
+/* Seitenzoom der Kiosk-App verhindern */
+
+html,
+body,
+.app {
+touch-action: pan-x pan-y;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="language-switch" aria-label="Sprache auswählen">
+    <button
+      id="languageDe"
+      class="language-button active"
+      type="button"
+      onclick="setLanguage('de')"
+      aria-pressed="true"
+    >
+      DE
+    </button>
+
+    <button
+      id="languageEn"
+      class="language-button"
+      type="button"
+      onclick="setLanguage('en')"
+      aria-pressed="false"
+    >
+      EN
+    </button>
+  </div>
+
+  <main id="content" class="content">
+
+    <section id="home" class="page active">
+      <div class="home-start">
+      <div class="hero">
+        <div class="logo">
+         <img src="bilder/Neuero_Logo.png" alt="NEUERO Logo">
+       </div>
+
+        <div class="hero-text">
+          <h1 data-i18n="homeTitle">
+            Durchlaufvorreiniger<br>Typ NDV
+          </h1>
+          <p data-i18n="homeDescription">
+            Leistungsstarke Vorreinigung mit geringem Platzbedarf – 
+            für reibungslose Weiterverarbeitung und Werterhalt der Ernte.
+          </p>
+      </div> 
+    </div>
+          <button
+            class="primary-button home-button"
+            onclick="showPage('info')"
+            data-i18n="learnMore"
+          >
+            MEHR ERFAHREN
+          </button>
+        
+      </div>
+    </section>
+
+    <section id="brochures" class="page">
+      <h2 class="page-title" data-i18n="brochuresTitle">
+        Prospekte
+      </h2>
+
+  <div class="qr-info-box">
+
+  <div class="qr-image">
+    <img src="bilder/qr-prospekte.png" alt="QR-Code für Prospekte">
+  </div>
+  <div class="qr-text">
+    <h3 data-i18n="downloadBrochures">
+      Prospekte herunterladen
+    </h3>
+
+    <p data-i18n="downloadBrochuresText">
+      Scannen Sie den QR-Code mit Ihrem Smartphone, um alle Prospekte
+      und Produktinformationen direkt herunterzuladen.
+    </p>
+  </div>
+
+</div>
+
+      <div class="brochure-list">
+
+        <button 
+          class="brochure-card" 
+          onclick="openBrochure('cleaningCatalog', 'pdf/Reinigen_Katalog.pdf')"
+        >
+          <span class="icon">📄</span>
+          <div>
+            <h3 data-i18n="cleaningCatalog">
+              Gesamtkatalog Reinigen
+            </h3>
+            <p data-i18n="cleaningCatalogText">
+              Ausführliche technische Daten, Maße und Details zum Durchlaufreiniger Typ NDV 
+              sowie allen Modellen dieser Kategorie.
+            </p>
+          </div>
+        </button>
+
+        <button 
+          class="brochure-card" 
+          onclick="openBrochure('cleaningBrochure', 'pdf/Reinigen_Prospekt.pdf')"
+        >
+          <span class="icon">📄</span>
+          <div>
+            <h3 data-i18n="cleaningBrochure">
+              Produktprospekt Reinigen
+            </h3>
+
+            <p data-i18n="cleaningBrochureText">
+              Kompakter Überblick über die wichtigsten Features, Einsatzbereiche 
+              und Vorteile unserer Reinigungssysteme.
+            </p>
+          </div>
+        </button>
+
+      </div>
+    </section>
+
+    <section id="info" class="page">
+      <h2 class="page-title" data-i18n="informationTitle">
+        Informationen
+      </h2>
+
+      <div class="card">
+        <h3 data-i18n="productTitle">
+          Durchlaufvorreiniger Typ NDV
+        </h3>
+        <p data-i18n="productDescription">
+          Mit dem kompakten und leistungsstarken NEUERO Durchlauf-Vorreiniger Typ NDV sichern Sie die Qualität Ihrer Ernteprodukte schon vor der Weiterverarbeitung.<br><br>
+          Das Gerät arbeitet nach dem bewährten Kaskadenprinzip: Das Getreide wird mehrfach von Luft durchströmt, wodurch leichte Verunreinigungen wie Staub, Spreu oder Bruchkörner effektiv entfernt werden – direkt im Durchlauf.<br><br>
+          Dank seiner geringen Einbauhöhe und flexiblen Einstellmöglichkeiten lässt sich der NDV problemlos in bestehende Anlagen integrieren und an unterschiedliche Schüttgüter anpassen.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 data-i18n="advantages">
+          Vorteile
+        </h3>
+        <ul>
+          <li data-i18n="advantage1">
+            Kompakter Aufbau – ideal auch bei begrenztem Platz
+          </li>
+          <li data-i18n="advantage2">
+            Effektive Trennung leichter Fremdstoffe durch Kaskadenprinzip
+          </li>
+          <li data-i18n="advantage3">
+            Vielseitig einstellbar für optimale Anpassung an Ihr Produkt
+          </li>
+          <li data-i18n="advantage4">
+            Nachrüstbar in bestehende Getreideverarbeitungssysteme
+          </li>
+          <li data-i18n="advantage5">
+            Serienmäßig ausgestattet mit Gebläse, Sichtfenster & Drosselklappe
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+       <h3 data-i18n="modelComparison">
+        Baugrößen im Vergleich
+      </h3>
+
+       <img
+         src="bilder/NDV_Bild_Zeichnung.webp"
+         alt="NDV Modelle im Vergleich"
+         class="comparison-image"
+       >
+      </div>
+
+      <div class="card">
+        <h3 data-i18n="technicalData">
+          Technische Daten
+        </h3>
+
+        <div class="technical-table-wrapper">
+          <table class="technical-table">
+            
+            <thead>
+              <tr>
+                <th scope="col" data-i18n="type">
+                  Typ
+                </th>
+                <th scope="col">
+                  NDV 15-35
+                </th>
+                <th scope="col">
+                  NDV 40-60
+                </th>
+                <th scope="col">
+                  NDV 80-120
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <th scope="row" data-i18n="inlet">
+                  Einlauf Ø [mm]
+                </th>
+                <td>150</td>
+                <td>200</td>
+                <td>250</td>
+              </tr>
+
+              <tr>
+                <th scope="row" data-i18n="outlet">
+                  Auslauf Ø [mm]
+                </th>
+                <td>150</td>
+                <td>200</td>
+                <td>250</td>
+              </tr>
+
+              <tr>
+                <th scope="row" data-i18n="extractionFan">
+                  Absauggebläse [kW]
+                </th>
+                <td>4,0</td>
+                <td>4,0</td>
+                <td>2 × 4,0</td>
+              </tr>
+
+              <tr>
+                <th scope="row" data-i18n="airCapacity">
+                  Luftleistung [m³/h]
+                </th>
+                <td>bis 3.000</td>
+                <td>bis 3.000</td>
+                <td>bis 6.000</td>
+              </tr>
+
+              <tr>
+                <th scope="row">
+                  <span data-i18n="cleaningCapacity">
+                  Reinigungsleistung [t/h]
+                  </span>
+                  <span class="table-note" data-i18n="cleaningCapacityNote">
+                    bei 750 kg/m³ Schüttgewicht und 14 % Restfeuchte
+                  </span>
+                </th>
+                <td>15–35</td>
+                <td>40–60</td>
+                <td>80–120</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+<section id="gallery" class="page">
+  <h2 class="page-title" data-i18n="galleryTitle">
+    Galerie
+  </h2>
+
+  <!-- Normale Bildergalerie -->
+  <div id="galleryView">
+
+    <div class="gallery-box" id="galleryBox">
+      <img
+        id="galleryImage"
+        src="bilder/NDV_Bild_1.jpg"
+        alt="Durchlaufvorreiniger Typ NDV"
+>
+
+      <video
+        id="galleryVideo"
+        controls
+        playsinline
+        preload="metadata"
+        style="display: none;"
+      >
+        
+      </video>
+    </div>
+
+    <div class="gallery-controls">
+      <button 
+       type="button" 
+       onclick="prevMedia()" data-i18n="previous">
+        Zurück
+      </button>
+
+      <div id="mediaDots" class="media-dots"></div>
+
+      <button type="button" onclick="nextMedia()" data-i18n="next">
+        Weiter
+      </button>
+    </div>
+
+    <p class="hint" data-i18n="galleryHint">
+      Sie können die Galerie auch nach links oder rechts wischen.
+    </p>
+  </div>
+
+  <!-- 3-D-Ansicht -->
+  <div id="modelView" class="model-view">
+
+    <div
+      class="model-tabs"
+      role="tablist"
+      aria-label="3-D-Modell auswählen"
+    >
+      <button
+        id="modelTab15"
+        class="model-tab"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        data-model="NDV15-35"
+        onclick="selectProductModel('NDV15-35')"
+      >
+        NDV 15-35
+      </button>
+
+      <button
+        id="modelTab40"
+        class="model-tab active"
+        type="button"
+        role="tab"
+        aria-selected="true"
+        data-model="NDV40-60"
+        onclick="selectProductModel('NDV40-60')"
+      >
+        NDV 40-60
+      </button>
+
+      <button
+        id="modelTab80"
+        class="model-tab"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        data-model="NDV80-120"
+        onclick="selectProductModel('NDV80-120')"
+      >
+        NDV 80-120
+      </button>
+    </div>
+
+    <div class="model-viewer-box">
+      <model-viewer
+       id="productModel"
+       src="modelle/NDV40-60.glb"
+       alt="Interaktives 3-D-Modell des Durchlaufvorreinigers"
+       camera-controls
+       touch-action="none"
+       disable-tap
+       auto-rotate
+       auto-rotate-delay="0"
+       rotation-per-second="15deg"
+       camera-orbit="0deg 75deg auto"
+       camera-target="auto auto auto"
+       field-of-view="30deg"
+       interpolation-decay="80"
+       shadow-intensity="1"
+       exposure="1"
+       loading="eager"
+      >
+      </model-viewer>
+    </div>
+  </div>
+
+  <!-- Umschalter zwischen Galerie und 3-D-Modell -->
+  <button
+    id="modelToggleButton"
+    class="model-button"
+    type="button"
+    onclick="toggleModelView()"
+    aria-pressed="false"
+  >
+    <span class="model-button-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2.5 20 7v10l-8 4.5L4 17V7z"></path>
+        <path d="M4 7l8 4.5L20 7"></path>
+        <path d="M12 11.5v10"></path>
+      </svg>
+    </span>
+
+    <span id="modelToggleText" data-i18n="openModel">
+      Produkt in 3-D ansehen
+    </span>
+  </button>
+</section>
+
+  </main>
+
+  <div id="pdfOverlay" class="pdf-overlay">
+    <div class="pdf-header">
+      <div>
+        <span class="small-label" data-i18n="brochureLabel">
+          Prospekt
+        </span>
+        <h3 id="pdfTitle" data-i18n="pdfTitle">
+          Gesamtkatalog Reinigen
+        </h3>
+      </div>
+
+      <button class="close-button" onclick="closeBrochure()" data-i18n="close">
+        Schließen
+      </button>
+    </div>
+
+    <iframe id="pdfFrame"></iframe>
+  </div>
+  
+<nav class="bottom-nav">
+
+  <button onclick="showPage('home')" id="nav-home" class="active">
+    <span class="nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 10.5L12 3l9 7.5"></path>
+        <path d="M5 10v10h14V10"></path>
+        <path d="M9 20v-6h6v6"></path>
+      </svg>
+    </span>
+    <span class="nav-label" data-i18n="navHome">
+      Home
+    </span>
+  </button>
+
+  <button onclick="showPage('brochures')" id="nav-brochures">
+    <span class="nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7 3h7l5 5v13H7z"></path>
+        <path d="M14 3v5h5"></path>
+        <path d="M9 13h6"></path>
+        <path d="M9 17h6"></path>
+      </svg>
+    </span>
+    <span class="nav-label" data-i18n="navBrochures">
+      Prospekte
+    </span>
+  </button>
+
+  <button onclick="showPage('info')" id="nav-info">
+    <span class="nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M12 10v7"></path>
+        <path d="M12 7h.01"></path>
+      </svg>
+    </span>
+    <span class="nav-label" data-i18n="navInfo">
+      Info
+    </span>
+  </button>
+
+  <button onclick="showPage('gallery')" id="nav-gallery">
+    <span class="nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4" y="5" width="16" height="14" rx="2"></rect>
+        <circle cx="9" cy="10" r="1.5"></circle>
+        <path d="M4 16l4.5-4 3.5 3 2.5-2.5L20 17"></path>
+      </svg>
+    </span>
+    <span class="nav-label" data-i18n="navGallery">
+      Galerie
+    </span>
+  </button>
+
+</nav>
+
+</div>
+
+  <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  let currentLanguage = "de";
+
+ const translations = {
+  de: {
+    homeTitle: "Durchlaufvorreiniger<br>Typ NDV",
+    homeDescription:
+      "Leistungsstarke Vorreinigung mit geringem Platzbedarf für reibungslose Weiterverarbeitung und Werterhalt der Ernte.",
+    learnMore: "MEHR ERFAHREN",
+
+    brochuresTitle: "Prospekte",
+    downloadBrochures: "Prospekte herunterladen",
+    downloadBrochuresText:
+      "Scannen Sie den QR-Code mit Ihrem Smartphone, um alle Prospekte und Produktinformationen direkt herunterzuladen.",
+
+    cleaningCatalog: "Gesamtkatalog Reinigen",
+    cleaningCatalogText:
+      "Ausführliche technische Daten, Maße und Details zum Durchlaufreiniger Typ NDV sowie allen Modellen dieser Kategorie.",
+
+    cleaningBrochure: "Produktprospekt Reinigen",
+    cleaningBrochureText:
+      "Kompakter Überblick über die wichtigsten Funktionen, Einsatzbereiche und Vorteile unserer Reinigungssysteme.",
+
+    informationTitle: "Informationen",
+    productTitle: "Durchlaufvorreiniger Typ NDV",
+    productDescription:
+      "Mit dem kompakten und leistungsstarken NEUERO Durchlauf-Vorreiniger Typ NDV sichern Sie die Qualität Ihrer Ernteprodukte schon vor der Weiterverarbeitung.<br><br>" +
+      "Das Gerät arbeitet nach dem bewährten Kaskadenprinzip: Das Getreide wird mehrfach von Luft durchströmt, wodurch leichte Verunreinigungen wie Staub, Spreu oder Bruchkörner effektiv entfernt werden.<br><br>" +
+      "Dank seiner geringen Einbauhöhe und flexiblen Einstellmöglichkeiten lässt sich der NDV problemlos in bestehende Anlagen integrieren und an unterschiedliche Schüttgüter anpassen.",
+
+    advantages: "Vorteile",
+    advantage1:
+      "Kompakter Aufbau, ideal auch bei begrenztem Platz",
+    advantage2:
+      "Effektive Trennung leichter Fremdstoffe durch Kaskadenprinzip",
+    advantage3:
+      "Vielseitig einstellbar für optimale Anpassung an Ihr Produkt",
+    advantage4:
+      "Nachrüstbar in bestehende Getreideverarbeitungssysteme",
+    advantage5:
+      "Serienmäßig ausgestattet mit Gebläse, Sichtfenster und Drosselklappe",
+
+    modelComparison: "Baugrößen im Vergleich",
+    technicalData: "Technische Daten",
+    type: "Typ",
+    inlet: "Einlauf Ø [mm]",
+    outlet: "Auslauf Ø [mm]",
+    extractionFan: "Absauggebläse [kW]",
+    airCapacity: "Luftleistung [m³/h]",
+    cleaningCapacity: "Reinigungsleistung [t/h]",
+    cleaningCapacityNote:
+      "bei 750 kg/m³ Schüttgewicht und 14 % Restfeuchte",
+
+    galleryTitle: "Galerie",
+    previous: "Zurück",
+    next: "Weiter",
+    galleryHint:
+      "Sie können die Galerie auch nach links oder rechts wischen.",
+
+    openModel: "Produkt in 3-D ansehen",
+    closeModel: "Zurück zur Galerie",
+    modelLoading: "3-D-Modell wird geladen …",
+    modelInstructions:
+      "<strong>Modell bedienen:</strong> Mit einem Finger drehen und mit zwei Fingern vergrößern.",
+    modelError:
+      "Das 3-D-Modell konnte nicht geladen werden.",
+
+    brochureLabel: "Prospekt",
+    close: "Schließen",
+
+    navHome: "Home",
+    navBrochures: "Prospekte",
+    navInfo: "Info",
+    navGallery: "Galerie"
+  },
+
+  en: {
+    homeTitle: "Pre-cleaner<br>Type NDV",
+    homeDescription:
+      "High-performance pre-cleaning with minimal space requirements for smooth downstream processing and preservation of crop quality.",
+    learnMore: "LEARN MORE",
+
+    brochuresTitle: "Brochures",
+    downloadBrochures: "Download brochures",
+    downloadBrochuresText:
+      "Scan the QR code with your smartphone to download all brochures and product information directly.",
+
+    cleaningCatalog: "Cleaning systems catalogue",
+    cleaningCatalogText:
+      "Detailed technical data, dimensions and information about the NDV pre-cleaner and all models in this product category.",
+
+    cleaningBrochure: "Cleaning systems brochure",
+    cleaningBrochureText:
+      "A compact overview of the key features, applications and benefits of our cleaning systems.",
+
+    informationTitle: "Information",
+    productTitle: "Pre-cleaner Type NDV",
+    productDescription:
+      "The compact and high-performance NEUERO Pre-cleaner Type NDV helps preserve the quality of your harvested products before further processing.<br><br>" +
+      "The machine operates according to the proven cascade principle. Air flows through the grain several times, effectively removing light impurities such as dust, chaff and broken kernels during continuous operation.<br><br>" +
+      "Thanks to its low installation height and flexible adjustment options, the NDV can be easily integrated into existing systems and adapted to different bulk materials.",
+
+    advantages: "Advantages",
+    advantage1:
+      "Compact design, ideal where space is limited",
+    advantage2:
+      "Effective separation of light impurities using the cascade principle",
+    advantage3:
+      "Flexible adjustment for optimum adaptation to your product",
+    advantage4:
+      "Suitable for retrofitting into existing grain processing systems",
+    advantage5:
+      "Equipped as standard with a fan, inspection window and throttle valve",
+
+    modelComparison: "Model sizes at a glance",
+    technicalData: "Technical data",
+    type: "Type",
+    inlet: "Inlet Ø [mm]",
+    outlet: "Outlet Ø [mm]",
+    extractionFan: "Extraction fan [kW]",
+    airCapacity: "Air capacity [m³/h]",
+    cleaningCapacity: "Cleaning capacity [t/h]",
+    cleaningCapacityNote:
+      "at a bulk density of 750 kg/m³ and 14% residual moisture",
+
+    galleryTitle: "Gallery",
+    previous: "Previous",
+    next: "Next",
+    galleryHint:
+      "Swipe left or right to browse through the gallery.",
+
+    openModel: "View product in 3D",
+    closeModel: "Back to gallery",
+    modelLoading: "Loading 3D model …",
+    modelInstructions:
+      "<strong>Using the model:</strong> Drag with one finger to rotate and use two fingers to zoom.",
+    modelError:
+      "The 3D model could not be loaded.",
+
+    brochureLabel: "Brochure",
+    close: "Close",
+
+    navHome: "Home",
+    navBrochures: "Brochures",
+    navInfo: "Info",
+    navGallery: "Gallery"
+  }
+ };
+
+  function translatePage() {
+  const elements = document.querySelectorAll("[data-i18n]");
+
+  elements.forEach(function (element) {
+    const translationKey =
+      element.getAttribute("data-i18n");
+
+    const translatedText =
+      translations[currentLanguage][translationKey];
+
+    if (translatedText !== undefined) {
+      element.innerHTML = translatedText;
+    }
+
+    const activeModelData =
+      productModels[selectedProductModel];
+
+    const activeModelViewer =
+      document.getElementById("productModel");
+
+    if (activeModelData && activeModelViewer) {
+      activeModelViewer.alt =
+        currentLanguage === "en"
+          ? activeModelData.altEn
+          : activeModelData.altDe;
+    }
+  });
+
+  document.documentElement.lang = currentLanguage;
+
+  const germanButton =
+    document.getElementById("languageDe");
+
+  const englishButton =
+    document.getElementById("languageEn");
+
+  if (germanButton) {
+    const germanIsActive = currentLanguage === "de";
+
+    germanButton.classList.toggle(
+      "active",
+      germanIsActive
+    );
+
+    germanButton.setAttribute(
+      "aria-pressed",
+      germanIsActive ? "true" : "false"
+    );
+  }
+
+  if (englishButton) {
+    const englishIsActive = currentLanguage === "en";
+
+    englishButton.classList.toggle(
+      "active",
+      englishIsActive
+    );
+
+    englishButton.setAttribute(
+      "aria-pressed",
+      englishIsActive ? "true" : "false"
+    );
+  }
+
+  updateModelButtonText();
+ }
+
+ function setLanguage(language) {
+  if (!translations[language]) {
+    return;
+  }
+
+  currentLanguage = language;
+  translatePage();
+  resetInactivityTimer();
+ }
+
+ function updateModelButtonText() {
+  const toggleText =
+    document.getElementById("modelToggleText");
+
+  if (!toggleText) {
+    return;
+  }
+
+  if (modelViewIsOpen) {
+    toggleText.innerHTML =
+      translations[currentLanguage].closeModel;
+
+    toggleText.setAttribute(
+      "data-i18n",
+      "closeModel"
+    );
+  } else {
+    toggleText.innerHTML =
+      translations[currentLanguage].openModel;
+
+    toggleText.setAttribute(
+      "data-i18n",
+      "openModel"
+    );
+  }
+ }
+
+ window.setLanguage = setLanguage;
+
+  document.addEventListener("contextmenu", function (event) {
+    event.preventDefault();
+  });
+
+  document.addEventListener("dragstart", function (event) {
+    event.preventDefault();
+  });
+
+  document.addEventListener("selectionchange", function () {
+    const selection = window.getSelection();
+
+    if (selection) {
+      selection.removeAllRanges();
+   }
+  });
+  
+  const inactivityTime = 300000;
+
+  const mediaItems = [
+    {
+      type: "image",
+      src: "bilder/NDV_Bild_1.jpg"
+    },
+    {
+      type: "image",
+      src: "bilder/NDV_Bild_2.jpg"
+    },
+    {
+      type: "image",
+      src: "bilder/NDV_Bild_3.jpg"
+    },
+    {
+      type: "image",
+      src: "bilder/NDV_Bild_4.jpg"
+    },    
+  ];
+
+  let currentMedia = 0;
+  let inactivityTimer;
+
+  const heroImages = [
+  "bilder/NDV_Bild_Titel.jpg",
+  "bilder/NDV_Bild_3.jpg",
+  "bilder/NDV_Bild_4.jpg"
+  ];
+
+  let currentHero = 0;
+
+  const hero = document.querySelector(".hero");
+
+
+  function showPage(pageId) {
+    closeBrochure();
+
+    if (pageId !== "gallery" && modelViewIsOpen) {
+      closeModelView();
+    }
+
+    const pages = document.querySelectorAll(".page");
+
+    pages.forEach(function (page) {
+      page.classList.remove("active");
+    });
+
+    const targetPage = document.getElementById(pageId);
+
+    if (targetPage) {
+      targetPage.classList.add("active");
+    }
+
+    const navButtons = document.querySelectorAll(".bottom-nav button");
+
+    navButtons.forEach(function (button) {
+      button.classList.remove("active");
+    });
+
+    const activeButton = document.getElementById("nav-" + pageId);
+
+    if (activeButton) {
+      activeButton.classList.add("active");
+    }
+
+    stopVideo();
+    resetInactivityTimer();
+  }
+
+  window.showPage = showPage;
+
+  function openBrochure(titleKey, filePath) {
+    const overlay = document.getElementById("pdfOverlay");
+    const pdfTitle = document.getElementById("pdfTitle");
+    const pdfFrame = document.getElementById("pdfFrame");
+    document.body.classList.add("pdf-is-open");
+
+    if (pdfTitle) {
+      pdfTitle.textContent =
+        translations[currentLanguage][titleKey] || titleKey;
+    }
+
+    if (pdfFrame) {
+      pdfFrame.src = 
+        "pdf-viewer.html?file=" +
+        encodeURIComponent(filePath);
+    }
+
+    if (overlay) {
+      overlay.classList.add("active");
+    }
+
+    resetInactivityTimer();
+  }
+
+  function closeBrochure() {
+    document.body.classList.remove("pdf-is-open");
+    const overlay = document.getElementById("pdfOverlay");
+    const pdfFrame = document.getElementById("pdfFrame");
+
+    if (overlay) {
+      overlay.classList.remove("active");
+    }
+
+    if (pdfFrame) {
+      pdfFrame.src = "";
+    }
+
+    resetInactivityTimer();
+  }
+
+
+  window.openBrochure = openBrochure;
+  window.closeBrochure = closeBrochure;
+
+  function updateDots() {
+  const dotsContainer =
+    document.getElementById("mediaDots");
+
+  if (!dotsContainer) return;
+
+  dotsContainer.innerHTML = "";
+
+  mediaItems.forEach((item, index) => {
+
+    const dot = document.createElement("div");
+
+    dot.classList.add("media-dot");
+
+    if (index === currentMedia) {
+      dot.classList.add("active");
+    }
+
+    dotsContainer.appendChild(dot);
+  });
+  }
+
+  function updateMedia() {
+    const image = document.getElementById("galleryImage");
+    const video = document.getElementById("galleryVideo");
+    const videoSource = document.getElementById("galleryVideoSource");
+    const counter = document.getElementById("mediaCounter");
+
+    const item = mediaItems[currentMedia];
+
+    stopVideo();
+
+    if (item.type === "image") {
+      if (image) {
+        image.style.display = "block";
+        image.src = item.src;
+      }
+
+      if (video) {
+        video.style.display = "none";
+      }
+    }
+
+    if (item.type === "video") {
+      if (image) {
+        image.style.display = "none";
+      }
+
+      if (video && videoSource) {
+        video.style.display = "block";
+        videoSource.src = item.src;
+        video.load();
+      }
+    }
+    updateDots();
+  }
+
+  function nextMedia() {
+    currentMedia = currentMedia + 1;
+
+    if (currentMedia >= mediaItems.length) {
+      currentMedia = 0;
+    }
+
+    updateMedia();
+    resetInactivityTimer();
+  }
+
+  function prevMedia() {
+    currentMedia = currentMedia - 1;
+
+    if (currentMedia < 0) {
+      currentMedia = mediaItems.length - 1;
+    }
+
+    updateMedia();
+    resetInactivityTimer();
+  }
+
+  function stopVideo() {
+    const video = document.getElementById("galleryVideo");
+
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
+  }
+
+  window.nextMedia = nextMedia;
+  window.prevMedia = prevMedia;
+
+let modelViewIsOpen = false;
+const DEFAULT_CAMERA_ORBIT = "0deg 75deg auto";
+const DEFAULT_CAMERA_TARGET = "auto auto auto";
+const DEFAULT_FIELD_OF_VIEW = "30deg";
+
+const productModels = {
+  "NDV15-35": {
+    src: "modelle/NDV15-35.glb",
+    altDe:
+      "3-D-Modell des Durchlaufvorreinigers NDV 15-35",
+    altEn:
+      "3D model of the NDV 15-35 pre-cleaner"
+  },
+
+  "NDV40-60": {
+    src: "modelle/NDV40-60.glb",
+    altDe:
+      "3-D-Modell des Durchlaufvorreinigers NDV 40-60",
+    altEn:
+      "3D model of the NDV 40-60 pre-cleaner"
+  },
+
+  "NDV80-120": {
+    src: "modelle/NDV80-120.glb",
+    altDe:
+      "3-D-Modell des Durchlaufvorreinigers NDV 80-120",
+    altEn:
+      "3D model of the NDV 80-120 pre-cleaner"
+  }
+};
+
+const DEFAULT_PRODUCT_MODEL = "NDV40-60";
+
+let selectedProductModel =
+  DEFAULT_PRODUCT_MODEL;
+
+function resetModelView() {
+  const model = document.getElementById("productModel");
+
+  if (!model) {
+    return;
+  }
+
+  /* Ausgangswerte als JavaScript-Eigenschaften setzen */
+  model.cameraOrbit = DEFAULT_CAMERA_ORBIT;
+  model.cameraTarget = DEFAULT_CAMERA_TARGET;
+  model.fieldOfView = DEFAULT_FIELD_OF_VIEW;
+
+  /* Automatische Drehung auf den Anfang zurücksetzen */
+  if (typeof model.resetTurntableRotation === "function") {
+    model.resetTurntableRotation();
+  }
+
+  /* Kamera sofort an die Ausgangsposition setzen */
+  if (typeof model.jumpCameraToGoal === "function") {
+    model.jumpCameraToGoal();
+  }
+}
+
+function selectProductModel(modelKey) {
+  const modelData =
+    productModels[modelKey];
+
+  const modelViewer =
+    document.getElementById("productModel");
+
+  const modelLoading =
+    document.getElementById("modelLoading");
+
+  const modelError =
+    document.getElementById("modelError");
+
+  if (!modelData || !modelViewer) {
+    return;
+  }
+
+  selectedProductModel = modelKey;
+
+  /*
+    Aktive Registerkarte aktualisieren
+  */
+  const modelTabs =
+    document.querySelectorAll(".model-tab");
+
+  modelTabs.forEach(function (tab) {
+    const isActive =
+      tab.dataset.model === modelKey;
+
+    tab.classList.toggle(
+      "active",
+      isActive
+    );
+
+    tab.setAttribute(
+      "aria-selected",
+      isActive ? "true" : "false"
+    );
+  });
+
+  /*
+    Ladeanzeige zeigen und alte Fehlermeldung entfernen
+  */
+  if (modelLoading) {
+    modelLoading.style.display = "block";
+
+    modelLoading.innerHTML =
+      translations[currentLanguage].modelLoading;
+  }
+
+  if (modelError) {
+    modelError.classList.remove("active");
+  }
+
+  /*
+    Kameraposition vor dem Wechsel zurücksetzen
+  */
+  resetModelView();
+
+  /*
+    Beschreibung an aktuelle Sprache anpassen
+  */
+  modelViewer.alt =
+    currentLanguage === "en"
+      ? modelData.altEn
+      : modelData.altDe;
+
+  /*
+    GLB-Datei wechseln
+  */
+  if (
+    modelViewer.getAttribute("src") !==
+    modelData.src
+  ) {
+    modelViewer.setAttribute(
+      "src",
+      modelData.src
+    );
+  } else {
+    resetModelView();
+  }
+
+  resetInactivityTimer();
+}
+
+window.selectProductModel =
+  selectProductModel;
+
+function toggleModelView() {
+  if (modelViewIsOpen) {
+    closeModelView();
+  } else {
+    openModelView();
+  }
+
+  resetInactivityTimer();
+}
+
+function openModelView() {
+  const galleryView =
+    document.getElementById("galleryView");
+
+  const modelView =
+    document.getElementById("modelView");
+
+  const toggleText =
+    document.getElementById("modelToggleText");
+
+  const toggleButton =
+    document.getElementById("modelToggleButton");
+
+  resetModelView();  
+
+  modelViewIsOpen = true;
+
+  stopVideo();
+
+  if (galleryView) {
+    galleryView.style.display = "none";
+  }
+
+  if (modelView) {
+    modelView.classList.add("active");
+  }
+
+  if (toggleText) {
+  toggleText.setAttribute("data-i18n", "closeModel");
+  toggleText.innerHTML =
+    translations[currentLanguage].closeModel;
+  }
+
+  if (toggleButton) {
+    toggleButton.setAttribute("aria-pressed", "true");
+  }
+}
+
+function closeModelView() {
+  const galleryView =
+    document.getElementById("galleryView");
+
+  const modelView =
+    document.getElementById("modelView");
+
+  const toggleText =
+    document.getElementById("modelToggleText");
+
+  const toggleButton =
+    document.getElementById("modelToggleButton");
+
+  modelViewIsOpen = false;
+
+  /* Modell vor dem Ausblenden zurücksetzen */
+  resetModelView();
+  selectProductModel(DEFAULT_PRODUCT_MODEL);
+
+  if (galleryView) {
+    galleryView.style.display = "block";
+  }
+
+  if (modelView) {
+    modelView.classList.remove("active");
+  }
+
+  if (toggleText) {
+  toggleText.setAttribute("data-i18n", "openModel");
+  toggleText.innerHTML =
+    translations[currentLanguage].openModel;
+  }
+
+  if (toggleButton) {
+    toggleButton.setAttribute("aria-pressed", "false");
+  }
+}
+
+window.toggleModelView = toggleModelView;
+
+const productModel =
+  document.getElementById("productModel");
+
+const modelLoading =
+  document.getElementById("modelLoading");
+
+const modelError =
+  document.getElementById("modelError");
+
+if (productModel) {
+  productModel.addEventListener("load", function () {
+    if (modelLoading) {
+      modelLoading.style.display = "none";
+    }
+
+    if (modelError) {
+      modelError.classList.remove("active");
+    }
+  });
+
+  productModel.addEventListener("error", function () {
+    if (modelLoading) {
+      modelLoading.style.display = "none";
+    }
+
+    if (modelError) {
+      modelError.classList.add("active");
+    }
+  });
+}
+
+  let startX = 0;
+  let startY = 0;
+  let endX = 0;
+  let endY = 0;
+
+  const galleryBox = document.getElementById("galleryBox");
+
+  if (galleryBox) {
+    galleryBox.addEventListener("touchstart", function (event) {
+      startX = event.touches[0].clientX;
+      startY = event.touches[0].clientY;
+    }, { passive: true });
+
+    galleryBox.addEventListener("touchend", function (event) {
+      endX = event.changedTouches[0].clientX;
+      endY = event.changedTouches[0].clientY;
+      handleSwipe();
+    }, { passive: true });
+  }
+
+  function handleSwipe() {
+    const diffX = startX - endX;
+    const diffY = startY - endY;
+
+    if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        nextMedia();
+      } else {
+        prevMedia();
+      }
+    }
+  }
+
+  function resetInactivityTimer() {
+    clearTimeout(inactivityTimer);
+
+    inactivityTimer = setTimeout(function () {
+      closeBrochure();
+      closeModelView();
+
+      currentLanguage = "de";
+      translatePage();
+
+      showPage("home");
+    }, inactivityTime);
+  }
+
+  document.addEventListener("touchstart", resetInactivityTimer, { passive: true });
+  document.addEventListener("click", resetInactivityTimer);
+
+setInterval(function () {
+
+  hero.style.opacity = "0.6";
+
+  setTimeout(function () {
+
+    currentHero++;
+
+    if (currentHero >= heroImages.length) {
+      currentHero = 0;
+    }
+
+    hero.style.background =
+      `linear-gradient(
+        to top,
+        rgba(15, 23, 42, 0.99) 0%,
+        rgba(15, 23, 42, 0.7) 25%,
+        rgba(15, 23, 42, 0.2) 45%,
+        rgba(15, 23, 42, 0) 60%
+      ),
+      url('${heroImages[currentHero]}')`;
+
+    hero.style.backgroundSize = "cover";
+    hero.style.backgroundPosition = "center";
+
+    hero.style.opacity = "1";
+
+  }, 400);
+
+}, 7000);
+
+  setLanguage("de");
+  updateMedia();
+  resetInactivityTimer();
+
+});
+  </script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker
+        .register("./service-worker.js")
+        .then(function (registration) {
+          console.log(
+            "Service Worker registriert:",
+            registration.scope
+         );
+        })
+        .catch(function (error) {
+          console.error(
+            "Fehler beim Service Worker:",
+            error
+          );
+        });
+    });
+  }
+</script>
+
+</body>
+</html>

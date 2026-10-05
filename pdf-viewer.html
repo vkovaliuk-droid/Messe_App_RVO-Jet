@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PDF Viewer</title>
+
+<style>
+body{
+    margin:0;
+    background:#ffffff;
+}
+
+#pdf-container{
+    width:100%;
+}
+
+canvas{
+    display:block;
+    max-width:100%;
+    height:auto;
+    margin:0 auto 20px auto;
+}
+</style>
+</head>
+<body>
+
+<div id="pdf-container"></div>
+
+<script type="module">
+
+import * as pdfjsLib from "./pdfjs/pdf.mjs";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"./pdfjs/pdf.worker.mjs";
+
+const params = new URLSearchParams(window.location.search);
+const pdfFile = params.get("file");
+
+console.log("PDF-Datei:", pdfFile);
+      
+try {
+
+    const pdf = await pdfjsLib.getDocument({
+        url: pdfFile
+    }).promise;
+
+    const container = document.getElementById("pdf-container");
+
+    for(let pageNum = 1; pageNum <= pdf.numPages; pageNum++){
+
+        const page = await pdf.getPage(pageNum);
+
+        const viewport = page.getViewport({
+            scale: 1.5
+        });
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        container.appendChild(canvas);
+
+        await page.render({
+            canvasContext: context,
+            viewport: viewport
+        }).promise;
+    }
+
+} catch(error) {
+    console.error(error);
+}
+
+</script>
+
+</body>
+</html>
