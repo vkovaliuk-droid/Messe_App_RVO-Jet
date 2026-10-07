@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "NEUERO Messe-App – RVO-Jet",
-  "short_name": "NEUERO RVO-Jet",
-  "description": "Produktinformationen zum NEUERO Durchlaufvorreiniger Typ RVO und Jet-Filter",
+  "name": "NEUERO Messe-App – Getreidemühle und Jet-Filter",
+  "short_name": "Mühle + Filter",
+  "description": "Produktinformationen zur NEUERO Getreidemühle und zum Jet-Filter",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
