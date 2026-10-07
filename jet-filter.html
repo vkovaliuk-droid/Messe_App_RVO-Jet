@@ -88,7 +88,9 @@ body {
   height: 100dvh;
   max-width: var(--app-max-width);
   margin: 0 auto;
-  background: var(--color-background);
+
+  background: #111827;
+
   position: relative;
   overflow: hidden;
 }
@@ -100,9 +102,15 @@ body {
     - var(--product-tabs-height)
     - env(safe-area-inset-top)
   );
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
+
+  background: #004388;
+  border-radius: 0 22px 0 0;
+
+  z-index: 10;
 }
+
 
 .page {
   position: absolute;
@@ -893,7 +901,7 @@ touch-action: pan-x pan-y;
 
   width: 90%;
   margin:
-    calc(10px + env(safe-area-inset-top))
+    calc(5px + env(safe-area-inset-top))
     auto
     0;
 
@@ -906,27 +914,29 @@ touch-action: pan-x pan-y;
 
 .product-folder-tab {
   position: relative;
+  z-index: 1;
 
   flex: 1;
   min-width: 0;
-  min-height: 52px;
+  min-height: 48px;
 
-  padding: 13px 12px 11px;
+  padding: 9px 4px 7px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0);
   border-bottom: none;
   border-radius: 16px 16px 0 0;
 
-  background: #17243a;
-  color: rgba(255, 255, 255, 0.7);
+  background: #1a2944;
+  color: rgba(255, 255, 255, 0.55);
 
-  font-size: 17px;
+  font-size: 26px;
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
   text-align: center;
   text-decoration: none;
 
@@ -934,10 +944,11 @@ touch-action: pan-x pan-y;
     inset 0 -10px 16px rgba(0, 0, 0, 0.12),
     0 -4px 16px rgba(0, 0, 0, 0.12);
 
-  transform: translateY(5px);
+  transform: translateY(0px);
 
   transition:
     transform 0.2s ease,
+    min-height 0.2s ease,
     background 0.2s ease,
     color 0.2s ease;
 }
@@ -952,7 +963,7 @@ touch-action: pan-x pan-y;
   width: 42%;
   height: 10px;
 
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0);
   border-bottom: none;
   border-radius: 10px 10px 0 0;
 
@@ -964,37 +975,31 @@ touch-action: pan-x pan-y;
 
   min-height: 58px;
 
-  background: #ffe843;
-  color: #004388;
+  background: #004388;
+  color: #ffe843;
 
-  border-color: #ffe843;
+  border-color: #004388;
 
   box-shadow:
-    0 -7px 20px rgba(0, 0, 0, 0.2);
+    0 -7px 20px rgba(0, 0, 0, 0);
 
   transform: translateY(1px);
 }
 
-.product-folder-tab:active {
+.product-folder-tab:not(.active):active {
   transform: translateY(2px) scale(0.98);
 }
 
 /* Verbindung zwischen aktiver Registerkarte und Inhalt */
 
-.product-folder-tabs::after {
+.product-folder-tab.active::after {
   content: "";
-
   position: absolute;
-  z-index: -1;
-
   left: 0;
   right: 0;
-  bottom: -12px;
-
-  height: 14px;
-
-  border-radius: 10px 10px 0 0;
-  background: #ffe843;
+  bottom: -6px;
+  height: 7px;
+  background: #004388;
 }
 
 /* Sprachabhängige Bezeichnungen */
@@ -1028,11 +1033,11 @@ html[lang="en"] .product-folder-tab-en {
     class="product-folder-tab"
   >
     <span class="product-folder-tab-de">
-      Getreidemühle
+      Hammermühle RVO
     </span>
 
     <span class="product-folder-tab-en">
-      Grain mill
+      Hammer Mill RVO
     </span>
   </a>
 
