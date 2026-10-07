@@ -538,6 +538,14 @@ ul {
   font-weight: normal;
 }
 
+.technical-footnote {
+  margin: 12px 2px 0;
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.4;
+  font-style: italic;
+}
+
 @media (orientation: landscape) {
   .app {
     max-width: 520px;
@@ -1228,78 +1236,254 @@ html[lang="en"] .product-folder-tab-en {
           Technische Daten
         </h3>
 
-        <div class="technical-table-wrapper">
-          <table class="technical-table">
-            
-            <thead>
-              <tr>
-                <th scope="col" data-i18n="type">
-                  Typ
-                </th>
-                <th scope="col">
-                  NDV 15-35
-                </th>
-                <th scope="col">
-                  NDV 40-60
-                </th>
-                <th scope="col">
-                  NDV 80-120
-                </th>
-              </tr>
-            </thead>
+        <!-- Erste Typengruppe -->
 
-            <tbody>
-              <tr>
-                <th scope="row" data-i18n="inlet">
-                  Einlauf Ø [mm]
-                </th>
-                <td>150</td>
-                <td>200</td>
-                <td>250</td>
-              </tr>
+        <div class="technical-table-group">
+          <h4 class="technical-table-title"
+              data-i18n="rvoSmallSeries">
+            RVO 354 bis RVO 854
+          </h4>
 
-              <tr>
-                <th scope="row" data-i18n="outlet">
-                  Auslauf Ø [mm]
-                </th>
-                <td>150</td>
-                <td>200</td>
-                <td>250</td>
-              </tr>
+          <div class="technical-table-wrapper">
+            <table class="technical-table technical-table-large">
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="type">
+                    Typ
+                  </th>
 
-              <tr>
-                <th scope="row" data-i18n="extractionFan">
-                  Absauggebläse [kW]
-                </th>
-                <td>4,0</td>
-                <td>4,0</td>
-                <td>2 × 4,0</td>
-              </tr>
+                  <th scope="col">
+                    RVO 354
+                  </th>
 
-              <tr>
-                <th scope="row" data-i18n="airCapacity">
-                  Luftleistung [m³/h]
-                </th>
-                <td>bis 3.000</td>
-                <td>bis 3.000</td>
-                <td>bis 6.000</td>
-              </tr>
+                  <th scope="col">
+                    RVO 554
+                  </th>
 
-              <tr>
-                <th scope="row">
-                  <span data-i18n="cleaningCapacity">
-                  Reinigungsleistung [t/h]
+                  <th scope="col">
+                    RVO 654
+                  </th>
+
+                  <th scope="col">
+                    RVO 754
+                  </th>
+
+                  <th scope="col">
+                    RVO 854
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <tr>
+                  <th scope="row" data-i18n="motorPower">
+                    Motorleistung [kW]
+                  </th>
+
+                  <td>7,5</td>
+                  <td>11</td>
+                  <td>15</td>
+                  <td>18,5</td>
+                  <td>22</td>
+                </tr>
+
+                <tr>
+                  <th scope="row">
+                    <span data-i18n="grindingCapacity">
+                      Mahlleistung* [kg/h]
+                    </span>
+
+                  <span
+                    class="table-note"
+                    data-i18n="grainType"
+                  >
+                    Gerste/Weizen
                   </span>
-                  <span class="table-note" data-i18n="cleaningCapacityNote">
-                    bei 750 kg/m³ Schüttgewicht und 14 % Restfeuchte
+                </th>
+
+                  <td>990 /<br> 1.585</td>
+                  <td>1.650 /<br> 2.425</td>
+                  <td>2.280 /<br> 3.200</td>
+                  <td>2.870 /<br> 4.420</td>
+                  <td>3.740 /<br> 5.350</td>
+                </tr>
+
+                <tr>
+                  <th scope="row" data-i18n="numberOfBeaters">
+                    Anzahl der Schläger
+                  </th>
+
+                  <td>48</td>
+                  <td>48</td>
+                  <td>48</td>
+                  <td>48</td>
+                  <td>48</td>
+                </tr>
+
+                <tr>
+                  <th scope="row" data-i18n="screenArea">
+                    Siebfläche [m²]
+                  </th>
+
+                  <td>2.550</td>
+                  <td>2.550</td>
+                  <td>2.550</td>
+                  <td>2.550</td>
+                  <td>2.550</td>
+                </tr>
+
+                <tr>
+                  <th scope="row" data-i18n="screenWidth">
+                    Siebbreite [mm]
+                  </th>
+
+                  <td>200</td>
+                  <td>200</td>
+                  <td>200</td>
+                  <td>200</td>
+                  <td>200</td>
+                </tr>
+
+                <tr>
+                  <th scope="row" data-i18n="inletOutletDiameter">
+                    Durchmesser Ein-/Auslauf [mm]
+                  </th>
+
+                  <td>150 / 200</td>
+                  <td>150 / 200</td>
+                  <td>150 / 200</td>
+                  <td>150 / 200</td>
+                  <td>150 / 200</td>
+                </tr>
+
+              </tbody>
+            </table>
+
+          </div>
+
+        </div>
+
+        <!-- Zweite Typengruppe -->
+
+        <div class="technical-table-group">
+          <h4 class="technical-table-title"
+              data-i18n="rvoLargeSeries">
+            RVO 922 bis RVO 1075
+          </h4>
+
+          <div class="technical-table-wrapper">
+            <table class="technical-table technical-table-medium">
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="type">
+                    Typ
+                  </th>
+
+                  <th scope="col">
+                    RVO 922
+                  </th>
+
+                  <th scope="col">
+                    RVO 930
+                  </th>
+
+                  <th scope="col">
+                    RVO 1045
+                  </th>
+
+                  <th scope="col">
+                    RVO 1075
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <th scope="row" data-i18n="motorPower">
+                    Motorleistung [kW]
+                  </th>
+
+                  <td>22</td>
+                  <td>30</td>
+                  <td>45</td>
+                  <td>75</td>
+                </tr>
+
+                <tr>
+                  <th scope="row">
+                    <span data-i18n="grindingCapacity">
+                      Mahlleistung* [kg/h]
+                    </span>
+
+                  <span
+                    class="table-note"
+                    data-i18n="grainType"
+                  >
+                    Gerste/Weizen
                   </span>
                 </th>
-                <td>15–35</td>
-                <td>40–60</td>
-                <td>80–120</td>
-              </tr>
-            </tbody>
-          </table>
+
+                  <td>4.450 / 5.980</td>
+                  <td>6.420 / 7.680</td>
+                  <td>5.700 / 11.500</td>
+                  <td>8.400 / 18.150</td>
+                </tr>
+
+                <tr>
+                  <th scope="row" data-i18n="numberOfBeaters">
+                    Anzahl der Schläger
+                  </th>
+
+                  <td>90</td>
+                  <td>90</td>
+                  <td>156</td>
+                  <td>156</td>
+                </tr>
+
+                <tr>
+                  <th scope="row" data-i18n="screenArea">
+                    Siebfläche [m²]
+                  </th>
+
+                  <td>4.084</td>
+                  <td>4.084</td>
+                  <td>10.116</td>
+                  <td>10.116</td>
+                </tr>
+
+                <tr>
+                  <th scope="row" data-i18n="screenWidth">
+                    Siebbreite [mm]
+                  </th>
+
+                  <td>350</td>
+                  <td>350</td>
+                  <td>400</td>
+                  <td>400</td>
+                </tr>
+
+                <tr>
+                  <th scope="row" data-i18n="inletOutletDiameter">
+                    Durchmesser Ein-/Auslauf [mm]
+                  </th>
+
+                  <td>150 / 200</td>
+                  <td>150 / 200</td>
+                  <td>150 / -</td>
+                  <td>150 / -</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p
+            class="technical-footnote"
+            data-i18n="capacityFootnote"
+          >
+            *Leistungen für lagerfähiges, trockenes und gereinigtes
+            Getreide, Sieb: Drahtgewebesieb 4,5 mm
+          </p>
         </div>
       </div>
     </section>
@@ -1566,9 +1750,20 @@ document.addEventListener("DOMContentLoaded", function () {
     advantage6:
       "Gleichmäßige Schrotqualität für optimale Futterergebnisse",
 
+    rvoSmallSeries: "RVO 354 bis RVO 854",
+    rvoLargeSeries: "RVO 922 bis RVO 1075",
+
     modelComparison: "Baugrößen im Vergleich",
     technicalData: "Technische Daten",
     type: "Typ",
+    inletOutletDiameter:
+    "Durchmesser Ein-/Auslauf [mm]",
+    screenArea: "Siebfläche [m²]",
+    screenWidth: "Siebbreite [mm]",
+    numberOfBeaters: "Anzahl der Schläger",
+    motorPower: "Motorleistung [kW]",
+    grindingCapacity: "Mahlleistung* [kg/h]",
+    grainType: "Gerste/Weizen",
     inlet: "Einlauf Ø [mm]",
     outlet: "Auslauf Ø [mm]",
     extractionFan: "Absauggebläse [kW]",
@@ -1576,6 +1771,9 @@ document.addEventListener("DOMContentLoaded", function () {
     cleaningCapacity: "Reinigungsleistung [t/h]",
     cleaningCapacityNote:
       "bei 750 kg/m³ Schüttgewicht und 14 % Restfeuchte",
+
+    capacityFootnote:
+      "*Leistungen für lagerfähiges, trockenes und gereinigtes Getreide, Sieb: Drahtgewebesieb 4,5 mm",  
 
     galleryTitle: "Galerie",
     previous: "Zurück",
@@ -1601,9 +1799,9 @@ document.addEventListener("DOMContentLoaded", function () {
   },
 
   en: {
-    homeTitle: "Pre-cleaner<br>Type NDV",
+    homeTitle: "Hammer Mill<br>Type RVO",
     homeDescription:
-      "High-performance pre-cleaning with minimal space requirements for smooth downstream processing and preservation of crop quality.",
+      "Efficient grinding for consistent product quality and reliable feed preparation processes.",
     learnMore: "LEARN MORE",
 
     brochuresTitle: "Brochures",
@@ -1621,26 +1819,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
     informationTitle: "Information",
     productTitle: "Pre-cleaner Type NDV",
+    productTitle: "Hammer mill without fan, Type RVO",
+
     productDescription:
-      "The compact and high-performance NEUERO Pre-cleaner Type NDV helps preserve the quality of your harvested products before further processing.<br><br>" +
-      "The machine operates according to the proven cascade principle. Air flows through the grain several times, effectively removing light impurities such as dust, chaff and broken kernels during continuous operation.<br><br>" +
-      "Thanks to its low installation height and flexible adjustment options, the NDV can be easily integrated into existing systems and adapted to different bulk materials.",
+      "High grinding capacity with low energy consumption.<br><br>" +
+      "The unique three-part screen system, combined with bidirectional rotation, allows the grist structure to be precisely adapted to different requirements.<br><br>" +
+      "48 beaters and large screen surfaces ensure uniform grinding, high throughput and reliable feed preparation with virtually dust-free operation.",
 
     advantages: "Advantages",
+
     advantage1:
-      "Compact design, ideal where space is limited",
+     "Robust and durable machine construction",
+
     advantage2:
-      "Effective separation of light impurities using the cascade principle",
+      "Flexible adaptation to different feed mixtures",
+
     advantage3:
-      "Flexible adjustment for optimum adaptation to your product",
+      "Cost-effective operation due to low energy consumption",
+
     advantage4:
-      "Suitable for retrofitting into existing grain processing systems",
+      "Easy integration into existing systems",
+
     advantage5:
-      "Equipped as standard with a fan, inspection window and throttle valve",
+      "Reliable protection against metallic foreign objects",
+
+    advantage6:
+      "Consistent grist quality for optimum feed results",
+
+    rvoSmallSeries: "RVO 354 to RVO 854",
+    rvoLargeSeries: "RVO 922 to RVO 1075",
 
     modelComparison: "Model sizes at a glance",
     technicalData: "Technical data",
     type: "Type",
+    inletOutletDiameter:
+    "Inlet/outlet diameter [mm]",
+    screenArea: "Screen area [m²]",
+    screenWidth: "Screen width [mm]",
+    numberOfBeaters: "Number of beaters",
+    motorPower: "Motor power [kW]",
+    grindingCapacity: "Grinding capacity* [kg/h]",
+    grainType: "Barley/Wheat",
     inlet: "Inlet Ø [mm]",
     outlet: "Outlet Ø [mm]",
     extractionFan: "Extraction fan [kW]",
@@ -1648,6 +1867,9 @@ document.addEventListener("DOMContentLoaded", function () {
     cleaningCapacity: "Cleaning capacity [t/h]",
     cleaningCapacityNote:
       "at a bulk density of 750 kg/m³ and 14% residual moisture",
+
+    capacityFootnote:
+      "*Capacities for storable, dry and cleaned grain, screen: 4.5 mm wire mesh screen",  
 
     galleryTitle: "Gallery",
     previous: "Previous",
