@@ -1,13 +1,13 @@
 {
   "id": "./",
-  "name": "NEUERO Messe-App – Getreidemühle und Jet-Filter",
+  "name": "NEUERO Messe-App - Hammermühle und Jet-Filter",
   "short_name": "Mühle + Filter",
-  "description": "Produktinformationen zur NEUERO Getreidemühle und zum Jet-Filter",
-  "start_url": "./",
+  "description": "Produktinformationen zur NEUERO Hammermühle Typ RVO und zum Jet-Filter",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#020617",
+  "theme_color": "#020617",
   "orientation": "portrait",
   "icons": [
     {
