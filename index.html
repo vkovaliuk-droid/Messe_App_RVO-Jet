@@ -1542,47 +1542,35 @@ html[lang="en"] .product-folder-tab-en {
       aria-label="3-D-Modell auswählen"
     >
       <button
-        id="modelTab15"
-        class="model-tab"
-        type="button"
-        role="tab"
-        aria-selected="false"
-        data-model="NDV15-35"
-        onclick="selectProductModel('NDV15-35')"
-      >
-        NDV 15-35
-      </button>
-
-      <button
-        id="modelTab40"
+        id="modelTab554"
         class="model-tab active"
         type="button"
         role="tab"
         aria-selected="true"
-        data-model="NDV40-60"
-        onclick="selectProductModel('NDV40-60')"
+        data-model="RVO-554"
+        onclick="selectProductModel('RVO-554')"
       >
-        NDV 40-60
+        RVO 554
       </button>
 
       <button
-        id="modelTab80"
+        id="modelTab930"
         class="model-tab"
         type="button"
         role="tab"
         aria-selected="false"
-        data-model="NDV80-120"
-        onclick="selectProductModel('NDV80-120')"
+        data-model="RVO-930"
+        onclick="selectProductModel('RVO-930')"
       >
-        NDV 80-120
+        RVO 930
       </button>
     </div>
 
     <div class="model-viewer-box">
       <model-viewer
        id="productModel"
-       src="modelle/NDV40-60.glb"
-       alt="Interaktives 3-D-Modell des Durchlaufvorreinigers"
+       src="modelle/getreidemuehle/RVO-554.glb"
+       alt="Interaktives 3-D-Modell der Hammermühle"
        camera-controls
        touch-action="none"
        disable-tap
@@ -1819,7 +1807,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     informationTitle: "Information",
     productTitle: "Pre-cleaner Type NDV",
-    productTitle: "Hammer mill without fan, Type RVO",
+    productTitle: "Hammer mill without blower, Type RVO",
 
     productDescription:
       "High grinding capacity with low energy consumption.<br><br>" +
@@ -2240,32 +2228,24 @@ const DEFAULT_CAMERA_TARGET = "auto auto auto";
 const DEFAULT_FIELD_OF_VIEW = "30deg";
 
 const productModels = {
-  "NDV15-35": {
-    src: "modelle/NDV15-35.glb",
+  "RVO-554": {
+    src: "modelle/getreidemuehle/RVO-554.glb",
     altDe:
-      "3-D-Modell des Durchlaufvorreinigers NDV 15-35",
+      "3-D-Modell der Hammermühle Typ RVO 554",
     altEn:
-      "3D model of the NDV 15-35 pre-cleaner"
+      "3D model of the Hammer mill type RVO 554"
   },
 
-  "NDV40-60": {
-    src: "modelle/NDV40-60.glb",
+  "RVO-930": {
+    src: "modelle/getreidemuehle/RVO-930.glb",
     altDe:
-      "3-D-Modell des Durchlaufvorreinigers NDV 40-60",
+      "3-D-Modell der Hammermühle Typ RVO 930",
     altEn:
-      "3D model of the NDV 40-60 pre-cleaner"
+      "3D model of the Hammer mill type RVO 930"
   },
-
-  "NDV80-120": {
-    src: "modelle/NDV80-120.glb",
-    altDe:
-      "3-D-Modell des Durchlaufvorreinigers NDV 80-120",
-    altEn:
-      "3D model of the NDV 80-120 pre-cleaner"
-  }
 };
 
-const DEFAULT_PRODUCT_MODEL = "NDV40-60";
+const DEFAULT_PRODUCT_MODEL = "RVO-554";
 
 let selectedProductModel =
   DEFAULT_PRODUCT_MODEL;
