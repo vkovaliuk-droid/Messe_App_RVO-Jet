@@ -40,7 +40,7 @@
       height: 100%;
       margin: 0;
       overflow: hidden;
-      background: #111827;
+      background: #004388;
 
       font-family:
         system-ui,
@@ -55,34 +55,44 @@
     }
 
     .app-shell {
+      position: fixed;
+      inset: 0;
+
       width: 100%;
       height: 100dvh;
+
       display: flex;
       flex-direction: column;
+
       background: #111827;
+      overflow: hidden;
     }
 
+
     .product-tabs {
+      position: relative;
+      z-index: 20;
+
       flex: 0 0 auto;
+
       width: 90%;
       margin:
-        calc(5px + env(safe-area-inset-top))
+        calc(16px + env(safe-area-inset-top))
         auto
-        0;
+        -21.5px;
+
       padding-right: 125px;
 
       display: flex;
       align-items: flex-end;
       gap: 6px;
-
-      position: relative;
-      z-index: 10;
     }
 
     .product-tab {
       position: relative;
       flex: 1;
       min-width: 0;
+      height: 48px;
       min-height: 48px;
       padding: 9px 4px 7px;
 
@@ -97,7 +107,7 @@
       color: rgba(255, 255, 255, 0.55);
 
       font-family: inherit;
-      font-size: 26px;
+      font-size: 20px;
       font-weight: 700;
       line-height: 1.1;
       text-align: center;
@@ -106,8 +116,8 @@
       -webkit-appearance: none;
 
       box-shadow:
-        inset 0 -10px 16px rgba(0, 0, 0, 0.12),
-        0 -4px 16px rgba(0, 0, 0, 0.12);
+        inset 0 8px 14px rgba(0, 0, 0, 0),
+        inset 0 -4px 8px rgba(0, 0, 0, 0.18);
     }
 
     .product-tab::before {
@@ -122,20 +132,18 @@
     }
 
     .product-tab.active {
-      z-index: 2;
+     z-index: 3;
+
+      height: 58px;
       min-height: 58px;
+
       background: #004388;
       color: #ffe843;
-    }
 
-    .product-tab.active::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -6px;
-      height: 7px;
-      background: #004388;
+      font-size: 26px;
+      font-weight: 700;
+
+      box-shadow: none;
     }
 
     .product-tab:not(.active):active {
@@ -173,10 +181,22 @@
     }
 
     .product-frame {
-      flex: 1;
+      position: relative;
+      z-index: 1;
+
+      flex: 1 1 0;
       width: 100%;
+      height: 0;
       min-height: 0;
-      border: none;
+
+      display: block;
+
+      margin: 0;
+     padding: 0;
+
+      border: 0;
+     border-radius: 0;
+
       background: #004388;
     }
   </style>
@@ -205,8 +225,8 @@
         type="button"
         onclick="showProduct('jet')"
       >
-        <span class="tab-de">Jet-Filter</span>
-        <span class="tab-en" hidden>Jet filter</span>
+        <span class="tab-de">JET-Filter</span>
+        <span class="tab-en" hidden>JET Filter</span>
       </button>
     </nav>
 
