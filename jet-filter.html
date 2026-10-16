@@ -1788,6 +1788,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
  window.setLanguage = setLanguage;
 
+  window.addEventListener(
+   "message",
+   function (event) {
+     if (event.origin !== window.location.origin) {
+       return;
+     }
+
+     if (
+       event.data &&
+       event.data.type === "set-language"
+     ) {
+       setLanguage(event.data.language);
+     }
+   }
+ );
+
   document.addEventListener("contextmenu", function (event) {
     event.preventDefault();
   });

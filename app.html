@@ -42,6 +42,13 @@
       overflow: hidden;
       background: #111827;
 
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
       -webkit-user-select: none;
       user-select: none;
       -webkit-touch-callout: none;
@@ -223,117 +230,184 @@
       </button>
     </div>
 
-    ./index.html?embedded=1</iframe>
+    <iframe
+      id="productFrame"
+      class="product-frame"
+      src="./index.html?embedded=1"
+      title="NEUERO Produktinformationen"
+    ></iframe>
 
   </div>
 
-  <script>
-    let currentProduct = "rvo";
-    let currentLanguage = "de";
+<script>
+  let currentProduct = "rvo";
 
-    function showProduct(product) {
-      if (product === currentProduct) {
-        return;
-      }
+  let currentLanguage =
+    sessionStorage.getItem("messe-language") === "en"
+      ? "en"
+      : "de";
 
-      currentProduct = product;
+  const productFrame =
+    document.getElementById("productFrame");
 
-      const frame =
-        document.getElementById("productFrame");
+  const tabRvo =
+    document.getElementById("tabRvo");
 
-      const tabRvo =
-        document.getElementById("tabRvo");
+  const tabJet =
+    document.getElementById("tabJet");
 
-      const tabJet =
-        document.getElementById("tabJet");
+  const languageDe =
+    document.getElementById("languageDe");
 
-      tabRvo.classList.toggle(
-        "active",
-        product === "rvo"
-      );
+  const languageEn =
+    document.getElementById("languageEn");
 
-      tabJet.classList.toggle(
-        "active",
-        product === "jet"
-      );
 
-      if (product === "rvo") {
-        frame.src = "./index.html?embedded=1";
-      } else {
-        frame.src = "./jet-filter.html?embedded=1";
-      }
-    }
-
-    function setShellLanguage(language) {
-      currentLanguage = language;
-
-      sessionStorage.setItem(
-        "messe-language",
-        language
-      );
-
-      document
-        .getElementById("languageDe")
-        .classList.toggle(
-          "active",
-          language === "de"
-        );
-
-      document
-        .getElementById("languageEn")
-        .classList.toggle(
-          "active",
-          language === "en"
-        );
-
-      document
-        .querySelectorAll(".tab-de")
-        .forEach(function (element) {
-          element.hidden = language !== "de";
-        });
-
-      document
-        .querySelectorAll(".tab-en")
-        .forEach(function (element) {
-          element.hidden = language !== "en";
-        });
-
-      const frame =
-        document.getElementById("productFrame");
-
-      frame.contentWindow.postMessage(
+  function sendLanguageToFrame() {
+    if (
+      productFrame &&
+      productFrame.contentWindow
+    ) {
+      productFrame.contentWindow.postMessage(
         {
           type: "set-language",
-          language: language
+          language: currentLanguage
         },
         window.location.origin
       );
     }
+  }
 
+
+  function showProduct(product) {
+    if (
+      product !== "rvo" &&
+      product !== "jet"
+    ) {
+      return;
+    }
+
+    if (product === currentProduct) {
+      return;
+    }
+
+    currentProduct = product;
+
+    tabRvo.classList.toggle(
+      "active",
+      product === "rvo"
+    );
+
+    tabJet.classList.toggle(
+      "active",
+      product === "jet"
+    );
+
+    tabRvo.setAttribute(
+      "aria-current",
+      product === "rvo"
+        ? "page"
+        : "false"
+    );
+
+    tabJet.setAttribute(
+      "aria-current",
+      product === "jet"
+        ? "page"
+        : "false"
+    );
+
+    if (product === "rvo") {
+      productFrame.src =
+        "./index.html?embedded=1";
+    } else {
+      productFrame.src =
+        "./jet-filter.html?embedded=1";
+    }
+  }
+
+
+  function setShellLanguage(language) {
+    if (
+      language !== "de" &&
+      language !== "en"
+    ) {
+      return;
+    }
+
+    currentLanguage = language;
+
+    sessionStorage.setItem(
+      "messe-language",
+      language
+    );
+
+    document.documentElement.lang =
+      language;
+
+    languageDe.classList.toggle(
+      "active",
+      language === "de"
+    );
+
+    languageEn.classList.toggle(
+      "active",
+      language === "en"
+    );
+
+    document
+      .querySelectorAll(".tab-de")
+      .forEach(function (element) {
+        element.hidden =
+          language !== "de";
+      });
+
+    document
+      .querySelectorAll(".tab-en")
+      .forEach(function (element) {
+        element.hidden =
+          language !== "en";
+      });
+
+    sendLanguageToFrame();
+  }
+
+
+  productFrame.addEventListener(
+    "load",
+    function () {
+      sendLanguageToFrame();
+    }
+  );
+
+
+  window.addEventListener(
+    "load",
+    function () {
+      setShellLanguage(
+        currentLanguage
+      );
+    }
+  );
+
+
+  if ("serviceWorker" in navigator) {
     window.addEventListener(
       "load",
       function () {
-        const savedLanguage =
-          sessionStorage.getItem("messe-language");
-
-        setShellLanguage(
-          savedLanguage === "en"
-            ? "en"
-            : "de"
+        navigator.serviceWorker.register(
+          "./service-worker.js"
         );
       }
     );
+  }
 
-    if ("serviceWorker" in navigator) {
-      window.addEventListener(
-        "load",
-        function () {
-          navigator.serviceWorker.register(
-            "./service-worker.js"
-          );
-        }
-      );
-    }
-  </script>
+
+  window.showProduct =
+    showProduct;
+
+  window.setShellLanguage =
+    setShellLanguage;
+</script>
 </body>
 </html>
