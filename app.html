@@ -415,6 +415,64 @@
     }
   );
 
+  window.addEventListener(
+    "message",
+    function (event) {
+      if (
+        event.origin !==
+        window.location.origin
+      ) {
+        return;
+      }
+
+      if (
+        event.data &&
+        event.data.type === "reset-app"
+      ) {
+        currentProduct = "rvo";
+        currentLanguage = "de";
+
+        sessionStorage.setItem(
+          "messe-language",
+          "de"
+        );
+
+        tabRvo.classList.add("active");
+        tabJet.classList.remove("active");
+
+        tabRvo.setAttribute(
+          "aria-current",
+          "page"
+        );
+
+        tabJet.setAttribute(
+          "aria-current",
+          "false"
+        );
+
+        languageDe.classList.add("active");
+        languageEn.classList.remove("active");
+
+        document
+          .querySelectorAll(".tab-de")
+          .forEach(function (element) {
+            element.hidden = false;
+          });
+
+        document
+          .querySelectorAll(".tab-en")
+          .forEach(function (element) {
+            element.hidden = true;
+          });
+
+        document.documentElement.lang = "de";
+
+        productFrame.src =
+          "./index.html?embedded=1";
+      }
+    }
+  );
+
 
   if ("serviceWorker" in navigator) {
     window.addEventListener(

@@ -2603,8 +2603,25 @@ if (productModel) {
         "de"
       );
 
-      translatePage();
-      showPage("home");
+      const isEmbedded =
+        document.documentElement.classList.contains(
+          "embedded"
+        );
+
+      if (
+        isEmbedded &&
+        window.parent !== window
+      ) {
+        window.parent.postMessage(
+          {
+            type: "reset-app"
+          },
+          window.location.origin
+        );
+      } else {
+        translatePage();
+        showPage("home");
+      }
     }, inactivityTime);
   }
 

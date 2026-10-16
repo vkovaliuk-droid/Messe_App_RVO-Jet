@@ -2347,7 +2347,26 @@ if (productModel) {
         "de"
       );
 
-      window.location.replace("./index.html");
+      const isEmbedded =
+        document.documentElement.classList.contains(
+          "embedded"
+        );
+
+      if (
+        isEmbedded &&
+        window.parent !== window
+      ) {
+        window.parent.postMessage(
+          {
+            type: "reset-app"
+          },
+          window.location.origin
+        );
+      } else {
+        window.location.replace(
+          "./index.html"
+        );
+      }
     }, inactivityTime);
   }
 
