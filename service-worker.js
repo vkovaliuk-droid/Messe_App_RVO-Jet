@@ -2,7 +2,7 @@ const CACHE_NAME = "neuero-messe-app-rvo-jet-v2";
 
 /*
   Alle Dateien, die für den Offlinebetrieb benötigt werden.
-  Groß- und Kleinschreibung entsprechen deinem GitHub-Projekt.
+  Groß- und Kleinschreibung entsprechend GitHub-Projekts.
 */
 const OFFLINE_FILES = [
   "./",
@@ -12,7 +12,7 @@ const OFFLINE_FILES = [
   "./pdf-viewer.html",
 
   /*
-    Bilder
+    Gemeinsame Bilder
   */
   "./bilder/NDV_Bild_1.jpg",
   "./bilder/NDV_Bild_2.jpg",
@@ -24,22 +24,45 @@ const OFFLINE_FILES = [
   "./bilder/qr-prospekte.png",
 
   /*
-    3-D-Modell
+    Bilder der Hammermühle
   */
-  "./modelle/NDV15-35.glb",
-  "./modelle/NDV40-60.glb",
-  "./modelle/NDV80-120.glb",
+  "./bilder/getreidemuehle/RVO_Bild_Titel.webp",
+  "./bilder/getreidemuehle/RVO_Bild_1.png",
+  "./bilder/getreidemuehle/RVO_Bild_2.jpg",
+  "./bilder/getreidemuehle/RVO_Bild_3.jpg",
+  "./bilder/getreidemuehle/RVO_Bild_4.jpg",
+  "./bilder/getreidemuehle/RVO_Bild_5.JPG",
+  "./bilder/getreidemuehle/RVO_Bild_Zeichnung.webp",
+
+  /*
+    Bilder des Jet-Filters
+  */
+  "./bilder/jet-filter/Jet_Bild_Titel.webp",
+  "./bilder/jet-filter/Jet_Bild_1.webp",
+  "./bilder/jet-filter/Jet_Bild_2.webp",
+  "./bilder/jet-filter/Jet_Bild_Zeichnung.webp",
+
+  /*
+    3-D-Modelle der Hammermühle
+  */
+  "./modelle/getreidemuehle/RVO-554.glb",
+  "./modelle/getreidemuehle/RVO-930.glb",
+
+  /*
+    3-D-Modelle des Jet-Filters
+  */
+  "./modelle/jet-filter/JET-Filter_Duo.glb",
+  "./modelle/jet-filter/JET-Filter_NJF2.glb",
 
   /*
     PDF-Dateien
     Achtung: Der Ordner heißt bei dir "Pdf" mit großem P.
   */
-  "./pdf/Reinigen_Katalog.pdf",
-  "./pdf/Reinigen_Prospekt.pdf",
+  "./pdf/Mahlen&Mischen_Katalog.pdf",
+  "./pdf/M&M_Prospekt.pdf",
 
   /*
     PDF.js
-    Achtung: Der Ordner heißt bei dir "Pdfjs" mit großem P.
   */
   "./pdfjs/pdf.mjs",
   "./pdfjs/pdf.worker.mjs",
