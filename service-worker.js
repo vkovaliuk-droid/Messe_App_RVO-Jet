@@ -1,4 +1,4 @@
-const CACHE_NAME = "neuero-messe-app-rvo-jet-v2";
+const CACHE_NAME = "neuero-messe-app-rvo-jet-v3";
 
 /*
   Alle Dateien, die für den Offlinebetrieb benötigt werden.
@@ -6,6 +6,7 @@ const CACHE_NAME = "neuero-messe-app-rvo-jet-v2";
 */
 const OFFLINE_FILES = [
   "./",
+  "./app.html",
   "./index.html",
   "./jet-filter.html",
   "./manifest.json",

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  >
+
+  <title>NEUERO Messe-App</title>
+
+  <link rel="manifest" href="./manifest.json">
+
+  <meta name="theme-color" content="#020617">
+
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  >
+
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+  >
+
+  <meta
+    name="apple-mobile-web-app-title"
+    content="Mühle + Filter"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #111827;
+
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    .app-shell {
+      width: 100%;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      background: #111827;
+    }
+
+    .product-tabs {
+      flex: 0 0 auto;
+      width: 90%;
+      margin:
+        calc(5px + env(safe-area-inset-top))
+        auto
+        0;
+      padding-right: 125px;
+
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+
+      position: relative;
+      z-index: 10;
+    }
+
+    .product-tab {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      min-height: 48px;
+      padding: 9px 4px 7px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: none;
+      border-radius: 16px 16px 0 0;
+
+      background: #1a2944;
+      color: rgba(255, 255, 255, 0.55);
+
+      font-family: inherit;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: center;
+
+      appearance: none;
+      -webkit-appearance: none;
+
+      box-shadow:
+        inset 0 -10px 16px rgba(0, 0, 0, 0.12),
+        0 -4px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .product-tab::before {
+      content: "";
+      position: absolute;
+      top: -7px;
+      left: 17px;
+      width: 42%;
+      height: 10px;
+      border-radius: 10px 10px 0 0;
+      background: inherit;
+    }
+
+    .product-tab.active {
+      z-index: 2;
+      min-height: 58px;
+      background: #004388;
+      color: #ffe843;
+    }
+
+    .product-tab.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -6px;
+      height: 7px;
+      background: #004388;
+    }
+
+    .product-tab:not(.active):active {
+      transform: scale(0.98);
+    }
+
+    .language-switch {
+      position: absolute;
+      top: calc(14px + env(safe-area-inset-top));
+      right: 18px;
+      z-index: 20;
+
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+
+      border-radius: 16px;
+      background: rgba(2, 6, 23, 0.82);
+    }
+
+    .language-button {
+      min-width: 52px;
+      height: 42px;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .language-button.active {
+      background: #ffe843;
+      color: #004388;
+    }
+
+    .product-frame {
+      flex: 1;
+      width: 100%;
+      min-height: 0;
+      border: none;
+      background: #004388;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <nav
+      class="product-tabs"
+      aria-label="Gerät auswählen"
+    >
+      <button
+        id="tabRvo"
+        class="product-tab active"
+        type="button"
+        onclick="showProduct('rvo')"
+      >
+        <span class="tab-de">Hammermühle RVO</span>
+        <span class="tab-en" hidden>Hammer Mill RVO</span>
+      </button>
+
+      <button
+        id="tabJet"
+        class="product-tab"
+        type="button"
+        onclick="showProduct('jet')"
+      >
+        <span class="tab-de">Jet-Filter</span>
+        <span class="tab-en" hidden>Jet filter</span>
+      </button>
+    </nav>
+
+    <div class="language-switch">
+      <button
+        id="languageDe"
+        class="language-button active"
+        type="button"
+        onclick="setShellLanguage('de')"
+      >
+        DE
+      </button>
+
+      <button
+        id="languageEn"
+        class="language-button"
+        type="button"
+        onclick="setShellLanguage('en')"
+      >
+        EN
+      </button>
+    </div>
+
+    ./index.html?embedded=1</iframe>
+
+  </div>
+
+  <script>
+    let currentProduct = "rvo";
+    let currentLanguage = "de";
+
+    function showProduct(product) {
+      if (product === currentProduct) {
+        return;
+      }
+
+      currentProduct = product;
+
+      const frame =
+        document.getElementById("productFrame");
+
+      const tabRvo =
+        document.getElementById("tabRvo");
+
+      const tabJet =
+        document.getElementById("tabJet");
+
+      tabRvo.classList.toggle(
+        "active",
+        product === "rvo"
+      );
+
+      tabJet.classList.toggle(
+        "active",
+        product === "jet"
+      );
+
+      if (product === "rvo") {
+        frame.src = "./index.html?embedded=1";
+      } else {
+        frame.src = "./jet-filter.html?embedded=1";
+      }
+    }
+
+    function setShellLanguage(language) {
+      currentLanguage = language;
+
+      sessionStorage.setItem(
+        "messe-language",
+        language
+      );
+
+      document
+        .getElementById("languageDe")
+        .classList.toggle(
+          "active",
+          language === "de"
+        );
+
+      document
+        .getElementById("languageEn")
+        .classList.toggle(
+          "active",
+          language === "en"
+        );
+
+      document
+        .querySelectorAll(".tab-de")
+        .forEach(function (element) {
+          element.hidden = language !== "de";
+        });
+
+      document
+        .querySelectorAll(".tab-en")
+        .forEach(function (element) {
+          element.hidden = language !== "en";
+        });
+
+      const frame =
+        document.getElementById("productFrame");
+
+      frame.contentWindow.postMessage(
+        {
+          type: "set-language",
+          language: language
+        },
+        window.location.origin
+      );
+    }
+
+    window.addEventListener(
+      "load",
+      function () {
+        const savedLanguage =
+          sessionStorage.getItem("messe-language");
+
+        setShellLanguage(
+          savedLanguage === "en"
+            ? "en"
+            : "de"
+        );
+      }
+    );
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener(
+        "load",
+        function () {
+          navigator.serviceWorker.register(
+            "./service-worker.js"
+          );
+        }
+      );
+    }
+  </script>
+</body>
+</html>

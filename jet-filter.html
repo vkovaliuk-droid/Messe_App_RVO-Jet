@@ -1031,11 +1031,35 @@ html[lang="en"] .product-folder-tab-en {
   display: inline;
 }
 
+html.embedded .product-folder-tabs,
+html.embedded .language-switch {
+  display: none;
+}
+
+html.embedded .content {
+  height: calc(
+    100dvh
+    - var(--nav-height)
+    - env(safe-area-inset-bottom)
+  );
+}
+
 </style>
 
 </head>
 
 <body>
+
+  <script>
+    const urlParameters =
+      new URLSearchParams(window.location.search);
+
+    if (urlParameters.get("embedded") === "1") {
+      document.documentElement.classList.add(
+        "embedded"
+      );
+    }
+  </script>
 
 <div class="app">
 
