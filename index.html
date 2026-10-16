@@ -946,6 +946,10 @@ touch-action: pan-x pan-y;
   letter-spacing: 0.01em;
   text-align: center;
   text-decoration: none;
+  font-family: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
 
   box-shadow:
     inset 0 -10px 16px rgba(0, 0, 0, 0.12),
@@ -958,6 +962,17 @@ touch-action: pan-x pan-y;
     min-height 0.2s ease,
     background 0.2s ease,
     color 0.2s ease;
+}
+
+.product-folder-tab:disabled {
+  opacity: 1;
+  cursor: default;
+  -webkit-text-fill-color: #ffe843;
+}
+
+.product-folder-tab.active:disabled {
+  color: #ffe843;
+  -webkit-text-fill-color: #ffe843;
 }
 
 .product-folder-tab::before {
@@ -1035,10 +1050,11 @@ html[lang="en"] .product-folder-tab-en {
   class="product-folder-tabs"
   aria-label="Gerät auswählen"
 >
-  <a
-    href="./index.html"
+  <button
+    type="button"
     class="product-folder-tab active"
     aria-current="page"
+    disabled
   >
     <span class="product-folder-tab-de">
       Hammermühle RVO
@@ -1047,11 +1063,12 @@ html[lang="en"] .product-folder-tab-en {
     <span class="product-folder-tab-en">
       Hammer Mill RVO
     </span>
-  </a>
+  </button>
 
-  <a
-    href="./jet-filter.html"
+  <button
+    type="button"
     class="product-folder-tab"
+    onclick="openProductPage('./jet-filter.html')"
   >
     <span class="product-folder-tab-de">
       Jet-Filter
@@ -1060,7 +1077,7 @@ html[lang="en"] .product-folder-tab-en {
     <span class="product-folder-tab-en">
       Jet filter
     </span>
-  </a>
+  </button>
 </nav>
 
 
@@ -2084,6 +2101,21 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   window.showPage = showPage;
+
+  function openProductPage(pagePath) {
+    closeBrochure();
+
+    if (modelViewIsOpen) {
+      closeModelView();
+    }
+
+    const targetUrl =
+      new URL(pagePath, window.location.href);
+
+    window.location.replace(targetUrl.href);
+  }
+
+  window.openProductPage = openProductPage;
 
   function openBrochure(titleKey, filePath) {
     const overlay = document.getElementById("pdfOverlay");
