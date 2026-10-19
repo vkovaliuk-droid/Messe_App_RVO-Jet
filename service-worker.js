@@ -1,4 +1,4 @@
-const CACHE_NAME = "neuero-messe-app-rvo-jet-v10";
+const CACHE_NAME = "neuero-messe-app-rvo-jet-v11";
 
 /*
   Alle Dateien, die für den Offlinebetrieb benötigt werden.
