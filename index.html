@@ -1080,6 +1080,14 @@ html.embedded .page {
   padding-top: 40px;
 }
 
+/* Galerie im eingebetteten App-Modus nie scrollbar */
+
+html.embedded #gallery {
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: auto;
+}
+
 </style>
 
 </head>
