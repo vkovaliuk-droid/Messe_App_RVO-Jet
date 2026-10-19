@@ -1038,17 +1038,46 @@ html[lang="en"] .product-folder-tab-en {
   display: inline;
 }
 
+/* Darstellung innerhalb der gemeinsamen app.html */
+
+html.embedded,
+html.embedded body,
+html.embedded .app {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+}
+
+/* Die äußere app.html zeigt bereits Tabs und Sprachschalter */
+
 html.embedded .product-folder-tabs,
 html.embedded .language-switch {
   display: none;
 }
 
+/*
+  Der Inhaltsbereich nutzt die gesamte verbleibende Höhe.
+  Die untere Navigation berücksichtigt die Safe Area bereits selbst.
+*/
+
 html.embedded .content {
   height: calc(
-    100dvh
-    - var(--nav-height)
-    - env(safe-area-inset-bottom)
+    100dvh - var(--nav-height)
   );
+}
+
+/*
+  Innerhalb des iframe ist kein zusätzlicher oberer
+  iPad-Sicherheitsabstand notwendig.
+*/
+
+html.embedded .page {
+  padding-top: 10px;
 }
 
 </style>
