@@ -135,6 +135,26 @@
       box-shadow:
         inset 0 8px 14px rgba(0, 0, 0, 0),
         inset 0 -4px 8px rgba(0, 0, 0, 0.18);
+
+      transform-origin: bottom center;
+
+      transition:
+        height 0.16s ease-out,
+        min-height 0.16s ease-out,
+        background-color 0.16s ease-out,
+        color 0.16s ease-out,
+        font-size 0.16s ease-out,
+        box-shadow 0.16s ease-out,
+        transform 0.12s ease-out; 
+    }
+
+    .product-tab:not(.active) {
+      transform: translateY(0);
+    }
+
+    .product-tab:not(.active):active {
+      opacity: 1;
+      transform: scale(0.97);
     }
 
     .product-tab::before {
@@ -161,6 +181,9 @@
       font-weight: 700;
 
       box-shadow: none;
+
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .product-tab:not(.active):active {
@@ -224,6 +247,19 @@
       border-radius: 0;
 
       background: #020617;
+
+      opacity: 1;
+      transform: translateY(0);
+
+      transition:
+        opacity 0.1s ease,
+        transform 0.1s ease;
+    }
+
+    .product-frame.switching {
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: none;
     }
   </style>
 </head>
@@ -325,6 +361,10 @@
   }
 
 
+  let productSwitchIsRunning = false;
+  let productSwitchTimer = null;
+  let productSwitchSafetyTimer = null;
+
   function showProduct(product) {
     if (
       product !== "rvo" &&
@@ -333,11 +373,19 @@
       return;
     }
 
-    if (product === currentProduct) {
+    if (
+      product === currentProduct ||
+      productSwitchIsRunning
+    ) {
       return;
     }
 
+    productSwitchIsRunning = true;
     currentProduct = product;
+
+    /*
+      Aktiven Produkt-Tab umschalten
+    */
 
     tabRvo.classList.toggle(
       "active",
@@ -363,13 +411,51 @@
         : "false"
     );
 
-    if (product === "rvo") {
-      productFrame.src =
-        "./index.html";
-    } else {
-      productFrame.src =
-        "./jet-filter.html";
-    }
+    /*
+      Aktuellen Produktinhalt ausblenden
+    */
+
+    productFrame.classList.add(
+      "switching"
+    );
+
+    clearTimeout(productSwitchTimer);
+    clearTimeout(productSwitchSafetyTimer);
+
+    /*
+      Nach dem Ausblenden die neue Seite laden
+    */
+
+    productSwitchTimer = setTimeout(
+      function () {
+        if (product === "rvo") {
+          productFrame.src =
+            "./index.html";
+        } else {
+          productFrame.src =
+            "./jet-filter.html";
+        }
+      },
+      10
+    );
+
+    /*
+      Sicherheitsfunktion:
+      Falls die neue Seite nicht geladen wird,
+      wird die Bedienung nach drei Sekunden
+      wieder freigegeben.
+    */
+
+    productSwitchSafetyTimer = setTimeout(
+      function () {
+        productFrame.classList.remove(
+          "switching"
+        );
+
+        productSwitchIsRunning = false;
+      },
+      3000
+    );
   }
 
 
@@ -422,7 +508,35 @@
   productFrame.addEventListener(
     "load",
     function () {
+      /*
+        Gewählte Sprache an die neu geladene
+        Produktseite übertragen.
+      */
+
       sendLanguageToFrame();
+
+      /*
+        Sicherheits-Timer beenden, weil die
+        Produktseite erfolgreich geladen wurde.
+      */
+
+      clearTimeout(
+        productSwitchSafetyTimer
+      );
+
+      /*
+        Neuen Inhalt wieder weich einblenden.
+      */
+
+      requestAnimationFrame(
+        function () {
+          productFrame.classList.remove(
+            "switching"
+          );
+
+          productSwitchIsRunning = false;
+        }
+      );
     }
   );
 
@@ -487,6 +601,24 @@
           });
 
         document.documentElement.lang = "de";
+
+        /*
+          Eine möglicherweise laufende
+          Produktanimation beenden.
+        */
+
+        clearTimeout(productSwitchTimer);
+        clearTimeout(productSwitchSafetyTimer);
+
+        productSwitchIsRunning = false;
+
+        productFrame.classList.remove(
+          "switching"
+        );
+
+        /*
+          Hammermühlen-Startseite laden.
+        */
 
         productFrame.src =
           "./index.html";
