@@ -243,19 +243,8 @@
       border-radius: 0;
 
       background: #020617;
-
-      opacity: 1;
-
-      transition:
-        opacity 0.08s linear;
-
-      will-change: opacity;
     }
 
-    .product-frame.switching {
-      opacity: 0.15;
-      pointer-events: none;
-    }
   </style>
 </head>
 
@@ -406,14 +395,6 @@
         : "false"
     );
 
-    /*
-      Aktuellen Produktinhalt ausblenden
-    */
-
-    productFrame.classList.add(
-      "switching"
-    );
-
     clearTimeout(productSwitchTimer);
     clearTimeout(productSwitchSafetyTimer);
 
@@ -443,10 +424,7 @@
 
     productSwitchSafetyTimer = setTimeout(
       function () {
-        productFrame.classList.remove(
-          "switching"
-        );
-
+        
         productSwitchIsRunning = false;
       },
       3000
