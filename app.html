@@ -139,13 +139,9 @@
       transform-origin: bottom center;
 
       transition:
-        height 0.16s ease-out,
-        min-height 0.16s ease-out,
-        background-color 0.16s ease-out,
-        color 0.16s ease-out,
-        font-size 0.16s ease-out,
-        box-shadow 0.16s ease-out,
-        transform 0.12s ease-out; 
+        background-color 0.12s ease-out,
+        color 0.12s ease-out,
+        box-shadow 0.12s ease-out;
     }
 
     .product-tab:not(.active) {
@@ -187,7 +183,7 @@
     }
 
     .product-tab:not(.active):active {
-      transform: scale(0.98);
+      filter: brightness(1.08);
     }
 
     .language-switch {
@@ -249,16 +245,15 @@
       background: #020617;
 
       opacity: 1;
-      transform: translateY(0);
 
       transition:
-        opacity 0.1s ease,
-        transform 0.1s ease;
+        opacity 0.08s linear;
+
+      will-change: opacity;
     }
 
     .product-frame.switching {
-      opacity: 0;
-      transform: translateY(4px);
+      opacity: 0.15;
       pointer-events: none;
     }
   </style>
@@ -436,7 +431,7 @@
             "./jet-filter.html";
         }
       },
-      10
+      50
     );
 
     /*
@@ -530,11 +525,15 @@
 
       requestAnimationFrame(
         function () {
-          productFrame.classList.remove(
-            "switching"
-          );
+          requestAnimationFrame(
+            function () {
+              productFrame.classList.remove(
+                "switching"
+              );
 
-          productSwitchIsRunning = false;
+              productSwitchIsRunning = false;
+            }
+          );
         }
       );
     }
