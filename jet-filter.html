@@ -1051,10 +1051,7 @@ html.embedded .content {
 <body>
 
   <script>
-    const urlParameters =
-      new URLSearchParams(window.location.search);
-
-    if (urlParameters.get("embedded") === "1") {
+    if (window.self !== window.top) {
       document.documentElement.classList.add(
         "embedded"
       );
