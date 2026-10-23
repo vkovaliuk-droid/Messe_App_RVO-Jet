@@ -828,11 +828,32 @@ line-height: 1;
   transform: scale(0.96);
 }
 
-/* Sprachschalter ausblenden, während ein PDF geöffnet ist */
+/* App-Inhalt ausblenden, während ein PDF geöffnet ist */
 
 body.pdf-is-open .language-switch,
 body.pdf-is-open .product-folder-tabs {
   display: none;
+}
+
+/*
+  Die Seite hinter dem PDF vollständig ausblenden.
+  Dadurch kann die Überschrift "Prospekte" beim Scrollen
+  nicht mehr über dem PDF erscheinen.
+*/
+
+body.pdf-is-open .content {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/*
+  PDF-Fenster bleibt sichtbar und erhält eine eigene,
+  eindeutig höhere Darstellungsebene.
+*/
+
+body.pdf-is-open .pdf-overlay.active {
+  visibility: visible;
+  pointer-events: auto;
 }
 
 /* Registerkarten für die 3-D-Modelle */
@@ -1067,6 +1088,42 @@ html.embedded #gallery {
   overflow: hidden;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: auto;
+}
+
+/* Stabile PDF-Darstellung auf dem iPad */
+
+.pdf-overlay {
+  z-index: 500;
+
+  overflow: hidden;
+
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+
+  isolation: isolate;
+  contain: paint;
+}
+
+.pdf-overlay.active {
+  display: flex;
+  flex-direction: column;
+
+  visibility: visible;
+}
+
+.pdf-overlay iframe {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 </style>
